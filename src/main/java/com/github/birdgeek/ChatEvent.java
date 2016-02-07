@@ -140,7 +140,7 @@ public class ChatEvent extends ListenerAdapter{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}			
-			e.getTextChannel().sendMessage("BreadBot is developed by LoafaBread and all the code can be found at https://github.com/Birdgeek/Discord-Bot");			
+			e.getTextChannel().sendMessage("BreadBot is developed by LoafaBread and all the code can be found at http://birdgeek.github.io/BreadBot/");			
 			break;
 		case "#reload":
 			if (isApprovedUser(getUsername(e))) {
