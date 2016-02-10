@@ -157,12 +157,11 @@ public class ChatEvent extends ListenerAdapter{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				break;
+				break;				
 			}
 		}
 	}
 
-	
 	private void delMessage(MessageReceivedEvent e) {
 		if (SettingsFile.config.getBoolean("delcmd")) {
 			e.getMessage().deleteMessage();
