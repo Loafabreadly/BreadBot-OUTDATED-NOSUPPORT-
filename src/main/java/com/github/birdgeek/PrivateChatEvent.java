@@ -33,13 +33,12 @@ public class PrivateChatEvent extends ListenerAdapter {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void displayStats(PrivateMessageReceivedEvent e) {
 		e.getChannel().sendMessage("Bread Bot Stats:");
 		e.getChannel().sendMessage("----------------------------------------");
 	
-		while (StatsFile.config.getKeys().hasNext()) {
-			e.getChannel().sendMessage(StatsFile.config.getKeys().next() + "= " + StatsFile.config.getInt((String) StatsFile.config.getKeys().next()));
-		}
+		StatsFile.config.getKeys().forEachRemaining(new MyConsumer(e));
 	}
 
 	private void startEditing(PrivateMessageReceivedEvent e) {

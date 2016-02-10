@@ -19,6 +19,7 @@ public class BotMain {
 	static SettingsFile config;
 	static StatsFile stats;
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) throws  FileNotFoundException, IOException, ConfigurationException, LoginException, IllegalArgumentException {
 		
 		config = new SettingsFile();
@@ -28,7 +29,9 @@ public class BotMain {
 		jda.addEventListener(new PrivateChatEvent(jda));
 		start = System.currentTimeMillis();
 		discordLogger.info("Bot Booted succesfully and logged in");
-		StatsFile.readKeys();
+		StatsFile.readKeys();						
+		
+		
 	}
 
 }
