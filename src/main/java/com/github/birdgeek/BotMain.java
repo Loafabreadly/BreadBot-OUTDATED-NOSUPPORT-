@@ -25,6 +25,7 @@ public class BotMain {
 		stats = new StatsFile();
 		JDA jda = new JDABuilder(SettingsFile.getEmail(), SettingsFile.getPassword()).build();
 		jda.addEventListener(new ChatEvent(jda));
+		jda.addEventListener(new PrivateChatEvent(jda));
 		start = System.currentTimeMillis();
 		discordLogger.info("Bot Booted succesfully and logged in");
 		StatsFile.readKeys();

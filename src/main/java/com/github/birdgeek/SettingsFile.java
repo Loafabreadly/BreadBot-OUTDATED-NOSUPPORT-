@@ -5,7 +5,11 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class SettingsFile {
+<<<<<<< HEAD
 	static String filename = "Config.cfg";
+=======
+	static String filename = "myConfig.cfg";
+>>>>>>> origin/master
 	static PropertiesConfiguration config;
 	
 	public SettingsFile () throws ConfigurationException {
