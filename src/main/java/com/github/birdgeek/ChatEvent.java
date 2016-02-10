@@ -19,7 +19,6 @@ public class ChatEvent extends ListenerAdapter{
 	long start = BotMain.start;
 	String[] approvedUsers = getApprovedUsers();
 	static String helpFileName ="help.txt";
-	static String usersFileName = "approvedUsers.txt";
 	public ChatEvent(JDA jda) {
 		this.api = jda;
 	}

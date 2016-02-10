@@ -6,7 +6,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class StatsFile {
 	//static PropertiesConfiguration statsFile = new PropertiesConfiguration();
-	String fileName = "stats.cfg";
+	String fileName = "myStats.cfg";
 	static PropertiesConfiguration config;
 	
 	public StatsFile () throws ConfigurationException {
