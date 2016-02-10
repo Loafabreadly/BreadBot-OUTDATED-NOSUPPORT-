@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
+import java.util.function.Consumer;
 
 import org.apache.commons.configuration.ConfigurationException;
 
@@ -156,8 +157,13 @@ public class ChatEvent extends ListenerAdapter{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-				break;				
 			}
+			break;
+		case "#stats":
+			e.getPrivateChannel().sendMessage("Bread Bot Stats:");
+			e.getPrivateChannel().sendMessage("----------------------------------------");
+		
+			StatsFile.config.getKeys().forEachRemaining((Consumer) e.getAuthor().getPrivateChannel().sendMessage(StatsFile.config.getKeys().toString()));
 		}
 	}
 
