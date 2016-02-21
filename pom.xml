@@ -49,11 +49,6 @@
     	<artifactId>JDA</artifactId>
     	<version>1.2.1_106</version>
 	</dependency>    
-    	<dependency>
-    	<groupId>me.itsghost</groupId>
-    	<artifactId>jDiscord</artifactId>
-    	<version>2.1.2</version>
-	</dependency>
 	<dependency>
 		<groupId>pircbot</groupId>
 		<artifactId>pircbot</artifactId>

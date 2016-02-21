@@ -20,6 +20,11 @@ public class ChatEvent extends ListenerAdapter{
 	long start = BotMain.start;
 	String[] approvedUsers = getApprovedUsers();
 	static String helpFileName ="help.txt";
+	static String[] availableCommands = {
+			"help", "globalhelp", "dev", "ping", "stats", 
+			"disconnect", "kill", "flip", "uptime", "currenttime"
+			, "reload"
+			};
 	public ChatEvent(JDA jda) {
 		this.api = jda;
 	}
@@ -163,7 +168,7 @@ public class ChatEvent extends ListenerAdapter{
 			e.getPrivateChannel().sendMessage("Bread Bot Stats:");
 			e.getPrivateChannel().sendMessage("----------------------------------------");
 		
-			StatsFile.config.getKeys().forEachRemaining((Consumer) e.getAuthor().getPrivateChannel().sendMessage(StatsFile.config.getKeys().toString()));
+			StatsFile.readKeys(e);
 		}
 	}
 

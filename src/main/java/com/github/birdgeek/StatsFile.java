@@ -1,7 +1,10 @@
 package com.github.birdgeek;
 
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+
+import net.dv8tion.jda.events.message.MessageReceivedEvent;
 
 
 public class StatsFile {
@@ -18,7 +21,14 @@ public class StatsFile {
 		return config.getInt(cmd);
 	}
 	static public void readKeys() {
-		System.out.println(config.getInt("ping"));
+		for (int i=0; i < ChatEvent.availableCommands.length; i++) {
+			System.out.println(ChatEvent.availableCommands[i].toString() + " = " +config.getInt(ChatEvent.availableCommands[i]));
+		}
+	}
+	static public void readKeys(MessageReceivedEvent e) {
+		for (int i=0; i < ChatEvent.availableCommands.length; i++) {
+			e.getAuthor().getPrivateChannel().sendMessage(ChatEvent.availableCommands[i].toString() + " = " +config.getInt(ChatEvent.availableCommands[i]));
+		}
 	}
 	static public void updateCount(String cmd) throws ConfigurationException {
 		int i = config.getInt(cmd);
