@@ -5,15 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Random;
-import java.util.function.Consumer;
-
 import org.apache.commons.configuration.ConfigurationException;
 
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 
-public class ChatEvent extends ListenerAdapter{
+public class ChatEvent extends ListenerAdapter {
 
 	JDA api;
 	Random random = new Random();
@@ -30,6 +28,16 @@ public class ChatEvent extends ListenerAdapter{
 	}
 	
 	public void onMessageReceived(MessageReceivedEvent e) {
+		if (e.getMessage().isPrivate()) {
+			if (e.getAuthor().getUsername().equalsIgnoreCase(SettingsFile.config.getString("Owner"))) {
+				switch (e.getMessage().getContent()) {
+				case "#stats":
+					StatsFile.readKeys(e);
+				}
+			}
+			e.getAuthor().getPrivateChannel().sendMessage("Sorry you don't have access!");
+		}
+		else {
 		switch (e.getMessage().getContent()) {
 		case "#ping":
 			delMessage(e);
@@ -163,12 +171,7 @@ public class ChatEvent extends ListenerAdapter{
 					e1.printStackTrace();
 				}
 			}
-			break;
-		case "#stats":
-			e.getPrivateChannel().sendMessage("Bread Bot Stats:");
-			e.getPrivateChannel().sendMessage("----------------------------------------");
-		
-			StatsFile.readKeys(e);
+		}
 		}
 	}
 

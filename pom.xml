@@ -47,7 +47,7 @@
 	<dependency>
     	<groupId>net.dv8tion</groupId>
     	<artifactId>JDA</artifactId>
-    	<version>1.2.1_106</version>
+    	<version>1.2.2_139</version>
 	</dependency>    
 	<dependency>
 		<groupId>pircbot</groupId>
@@ -56,10 +56,18 @@
 	</dependency>
 	</dependencies>
     
-    <repositories>
-      <repository>
-  <id>me.itsghost</id>
-  <url>http://itsghost.me/maven/</url>
-</repository>
-</repositories>
+<repositories>
+     	<repository>
+ 		 <id>me.itsghost</id>
+ 		 <url>http://itsghost.me/maven/</url>
+		</repository>
+    <repository>
+        <id>letece</id>
+        <url>http://lutece.paris.fr/nexus/content/repositories/lutece_third_party</url>
+    </repository>
+    <repository>
+        <id>DV8FromTheWorld</id>
+        <url>https://github.com/DV8FromTheWorld/Maven-Repository/raw/master/repo</url>
+    </repository>
+</repositories>		
 </project>
