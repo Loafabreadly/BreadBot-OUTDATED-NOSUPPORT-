@@ -17,8 +17,8 @@ the next few months and will eventually release beta builds when I feel it can b
 	- Coin Flip
 	- Config editing in discord
 	- League Intergration
-- Stats page
-- Configuration Files
+- ~~Stats page~~
+- ~~Configuration Files~~
 - HTML to edit said files
 - GUI
 - I'm sure i'll think of more

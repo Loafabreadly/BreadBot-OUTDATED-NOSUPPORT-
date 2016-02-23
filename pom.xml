@@ -7,8 +7,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
 
-  <name>main</name>
-  <url>http://maven.apache.org</url>
+  <name>BreadBot</name>
   
 
 
@@ -69,4 +68,6 @@
 		<url>https://github.com/DV8FromTheWorld/Maven-Repository/raw/master/repo</url>
 	</repository>
 </repositories>		
+	<url>http://birdgeek.github.io/BreadBot/</url>
+	<description>Welcome to BreadBot! A swiss army knife of a bot that is aimed towards a twitch streamer! Using BreadBot should be simple and come easily between setup to launching all systems within seconds. Check back as I develop the bot over the next few months and will eventually release beta builds when I feel it can be run well.</description>
 </project>

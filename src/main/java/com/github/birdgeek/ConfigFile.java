@@ -1,15 +1,17 @@
 package com.github.birdgeek;
 
 
+import java.math.BigInteger;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-public class SettingsFile {
+public class ConfigFile {
 	static String filename = "myConfig.cfg";
 	static PropertiesConfiguration config;
 	
-	public SettingsFile () throws ConfigurationException {
-		SettingsFile.config = new PropertiesConfiguration(filename);
+	public ConfigFile () throws ConfigurationException {
+		ConfigFile.config = new PropertiesConfiguration(filename);
 	}
 	
 	public static String[] getApprovedUsers() {
@@ -21,5 +23,11 @@ public class SettingsFile {
 	}
 	public static String getPassword() throws ConfigurationException {
 		return config.getString("Password");
+	}
+	public static BigInteger getHomeServer() {
+		return config.getBigInteger("Home_Server_ID");
+	}
+	public static BigInteger getHomeChannel() {
+		return config.getBigInteger("Home_Channel_ID");
 	}
 }

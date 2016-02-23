@@ -29,34 +29,45 @@ public class ChatEvent extends ListenerAdapter {
 	
 	public void onMessageReceived(MessageReceivedEvent e) {
 		if (e.getMessage().isPrivate()) {
-			if (e.getAuthor().getUsername().equalsIgnoreCase(SettingsFile.config.getString("Owner"))) {
+			
+			if (e.getAuthor().getUsername().equalsIgnoreCase(ConfigFile.config.getString("Owner"))) {
+				
 				switch (e.getMessage().getContent()) {
+				
 				case "#stats":
 					StatsFile.readKeys(e);
+					try {
+						
+						StatsFile.updateCount("stats");
+					} catch (ConfigurationException e1) {
+						e1.printStackTrace();
+					}
 				}
 			}
 			e.getAuthor().getPrivateChannel().sendMessage("Sorry you don't have access!");
 		}
 		else {
+			
 		switch (e.getMessage().getContent()) {
+		
 		case "#ping":
 			delMessage(e);
 			e.getTextChannel().sendMessage("PONG");
 			try {
+				
 				StatsFile.updateCount("ping");
 			} catch (ConfigurationException e2) {
-				// TODO Auto-generated catch block
 				e2.printStackTrace();
 			}
 			break;
 		case "#disconnect":
 			if (isApprovedUser(getUsername(e))) {
-				System.out.println(e.getAuthor().getUsername() + " has stopped the bot!");
+				DiscordConsoleStream.println(e.getAuthor().getUsername() + " has stopped the bot!");
 				delMessage(e);
 				try {
+					
 					StatsFile.updateCount("disconnect");
 				} catch (ConfigurationException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				api.shutdown();
@@ -67,12 +78,12 @@ public class ChatEvent extends ListenerAdapter {
 			break;
 		case "#kill":
 			if (isApprovedUser(getUsername(e))) {
-				System.out.println(e.getAuthor().getUsername() + " has killed the bot!");
+				DiscordConsoleStream.println(e.getAuthor().getUsername() + " has killed the bot!");
 				delMessage(e);
 				try {
+					
 					StatsFile.updateCount("kill");
 				} catch (ConfigurationException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}				
 				api.shutdown(true);
@@ -85,9 +96,9 @@ public class ChatEvent extends ListenerAdapter {
 			boolean choice = random.nextBoolean();
 			delMessage(e);
 			try {
+				
 				StatsFile.updateCount("flip");
 			} catch (ConfigurationException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}			
 			 if (choice == true) {
@@ -103,9 +114,9 @@ public class ChatEvent extends ListenerAdapter {
 		case "#help":
 			delMessage(e);
 			try {
+				
 				StatsFile.updateCount("help");
 			} catch (ConfigurationException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}			
 			sendHelp(e);			
@@ -113,9 +124,9 @@ public class ChatEvent extends ListenerAdapter {
 		case "#globalhelp":
 			delMessage(e);
 			try {
+				
 				StatsFile.updateCount("globalhelp");
 			} catch (ConfigurationException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}			
 			sendGlobalHelp(e);			
@@ -123,9 +134,9 @@ public class ChatEvent extends ListenerAdapter {
 		case "#uptime":
 			delMessage(e);
 			try {
+				
 				StatsFile.updateCount("uptime");
 			} catch (ConfigurationException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}			
 			sendUptime(e);		
@@ -134,9 +145,9 @@ public class ChatEvent extends ListenerAdapter {
 			if (isApprovedUser(getUsername(e))) {
 				delMessage(e);
 				try {
+					
 					StatsFile.updateCount("currenttime");
 				} catch (ConfigurationException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}				
 				e.getTextChannel().sendMessage("" + System.nanoTime());
@@ -148,35 +159,46 @@ public class ChatEvent extends ListenerAdapter {
 		case "#dev":
 			delMessage(e);
 			try {
+				
 				StatsFile.updateCount("dev");
 			} catch (ConfigurationException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}			
 			e.getTextChannel().sendMessage("BreadBot is developed by LoafaBread and all the code can be found at http://birdgeek.github.io/BreadBot/");			
 			break;
 		case "#reload":
 			if (isApprovedUser(getUsername(e))) {
-				SettingsFile.config.reload();
+				ConfigFile.config.reload();
 				try {
+					
 					StatsFile.updateCount("reload");
 				} catch (ConfigurationException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}				
 				try {
-					SettingsFile.config.load();
+					
+					ConfigFile.config.load();
 				} catch (ConfigurationException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+			}
+			break;
+		case "#debug":
+			if (isApprovedUser(getUsername(e))) {
+				e.getChannel().sendMessage("Server ID: " + api.getGuildById("" + ConfigFile.getHomeChannel())).getId();
+				e.getChannel().sendMessage("Server Name: " + api.getGuildById("" + ConfigFile.getHomeServer()).getName());
+				e.getChannel().sendMessage("Channel ID: " + api.getTextChannelById("" + ConfigFile.getHomeChannel()).getId());
+				e.getChannel().sendMessage("Channel Name: " + api.getTextChannelById("" + ConfigFile.getHomeChannel()).getName());
+				e.getChannel().sendMessage("Debug Mode: " + api.isDebug());
+				BotMain.setupConsoleOut();
+				DiscordConsoleStream.println("Test Out");
 			}
 		}
 		}
 	}
 
 	private void delMessage(MessageReceivedEvent e) {
-		if (SettingsFile.config.getBoolean("delcmd")) {
+		if (ConfigFile.config.getBoolean("delcmd")) {
 			e.getMessage().deleteMessage();
 		}
 	}
@@ -235,16 +257,16 @@ public class ChatEvent extends ListenerAdapter {
 			return everything;
 		}
 		catch (FileNotFoundException ex) {
-			System.out.println("Unable to open file: " + helpFileName);
+			DiscordConsoleStream.println("Unable to open file: " + helpFileName);
 		}
 		catch (IOException ex) {
-			System.out.println("Error reading file");
+			DiscordConsoleStream.println("Error reading file");
 		}
 		return "It must have failed on me :(";
 	}
 
 	private String[] getApprovedUsers() {
-		return SettingsFile.getApprovedUsers();
+		return ConfigFile.getApprovedUsers();
 		
 	}
 	private String getUsername(MessageReceivedEvent e) {

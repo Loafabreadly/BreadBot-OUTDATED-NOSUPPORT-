@@ -5,6 +5,7 @@ myConfig.cfg
 myStats.cfg
 *.class
 tokens.json
+Built/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
