@@ -60,6 +60,7 @@ public class ChatEvent extends ListenerAdapter {
 				e2.printStackTrace();
 			}
 			break;
+		
 		case "#disconnect":
 			if (isApprovedUser(getUsername(e))) {
 				DiscordConsoleStream.println(e.getAuthor().getUsername() + " has stopped the bot!");
@@ -76,6 +77,7 @@ public class ChatEvent extends ListenerAdapter {
 				e.getAuthor().getPrivateChannel().sendMessage("You are not authorized to do that!");
 				}			
 			break;
+			
 		case "#kill":
 			if (isApprovedUser(getUsername(e))) {
 				DiscordConsoleStream.println(e.getAuthor().getUsername() + " has killed the bot!");
@@ -92,6 +94,7 @@ public class ChatEvent extends ListenerAdapter {
 				e.getAuthor().getPrivateChannel().sendMessage("You are not authorized to do that!");
 			}			
 			break;
+			
 		case "#flip":
 			boolean choice = random.nextBoolean();
 			delMessage(e);
@@ -111,6 +114,7 @@ public class ChatEvent extends ListenerAdapter {
 				 e.getTextChannel().sendMessage( "You don fucked up");
 			 }			
 			break;
+			
 		case "#help":
 			delMessage(e);
 			try {
@@ -121,6 +125,7 @@ public class ChatEvent extends ListenerAdapter {
 			}			
 			sendHelp(e);			
 			break;
+			
 		case "#globalhelp":
 			delMessage(e);
 			try {
@@ -131,6 +136,7 @@ public class ChatEvent extends ListenerAdapter {
 			}			
 			sendGlobalHelp(e);			
 			break;
+			
 		case "#uptime":
 			delMessage(e);
 			try {
@@ -156,6 +162,7 @@ public class ChatEvent extends ListenerAdapter {
 				e.getAuthor().getPrivateChannel().sendMessage("You are not authorized to do that!");
 				}			
 			break;
+			
 		case "#dev":
 			delMessage(e);
 			try {
@@ -166,6 +173,7 @@ public class ChatEvent extends ListenerAdapter {
 			}			
 			e.getTextChannel().sendMessage("BreadBot is developed by LoafaBread and all the code can be found at http://birdgeek.github.io/BreadBot/");			
 			break;
+			
 		case "#reload":
 			if (isApprovedUser(getUsername(e))) {
 				ConfigFile.config.reload();
@@ -183,6 +191,7 @@ public class ChatEvent extends ListenerAdapter {
 				}
 			}
 			break;
+			
 		case "#debug":
 			if (isApprovedUser(getUsername(e))) {
 				e.getChannel().sendMessage("Server ID: " + api.getGuildById("" + ConfigFile.getHomeChannel())).getId();
@@ -192,6 +201,8 @@ public class ChatEvent extends ListenerAdapter {
 				e.getChannel().sendMessage("Debug Mode: " + api.isDebug());
 				BotMain.setupConsoleOut();
 				DiscordConsoleStream.println("Test Out");
+				BotMain.stream.enableRedirect(false);
+				System.out.println("Test 2");
 			}
 		}
 		}

@@ -20,6 +20,7 @@ public class BotMain {
 	static ConfigFile config;
 	static StatsFile stats;
 	static JDA jda;
+	static DiscordConsoleStream stream;
 	
 	public static void main(String[] args) throws  FileNotFoundException, IOException, ConfigurationException, LoginException, IllegalArgumentException {
 		
@@ -49,7 +50,7 @@ public class BotMain {
 		}
 	static void setupConsoleOut() {
 		if (ConfigFile.config.getBoolean("Console_Out")) {
-			new DiscordConsoleStream(jda.getTextChannelById("" + ConfigFile.getHomeChannel()), true);
+			stream = new DiscordConsoleStream(jda.getTextChannelById("" + ConfigFile.getHomeChannel()), true);
 			DiscordConsoleStream.println("" + ConfigFile.config.getBoolean("Console_Out"));
 		}
 	}
