@@ -10,3 +10,4 @@
 #kill - Force quits the bot (and the program)
 #reload - Will reload the config.cfg file
 #debug - Outputs a bunch of stuff only useful to me
+----------------------------------------
