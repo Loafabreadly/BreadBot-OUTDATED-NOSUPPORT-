@@ -48,9 +48,9 @@
 		<version>1.2.2_139</version>
 	</dependency>    
 	<dependency>
-		<groupId>pircbot</groupId>
-		<artifactId>pircbot</artifactId>
-		<version>1.5.0</version>
+        <groupId>org.pircbotx</groupId>
+        <artifactId>pircbotx</artifactId>
+        <version>2.1</version>
 	</dependency>
 </dependencies>
     

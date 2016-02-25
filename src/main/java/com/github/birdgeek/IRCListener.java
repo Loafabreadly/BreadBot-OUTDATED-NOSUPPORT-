@@ -1,14 +1,14 @@
 package com.github.birdgeek;
 
-import org.jibble.pircbot.PircBot;
+import org.pircbotx.hooks.ListenerAdapter;
 
-public class IRCBot extends PircBot {
+public class IRCListener extends ListenerAdapter {
 	public boolean doingRelay = false;
 
-	public IRCBot() {
-		this.setName("Birdy_Bot");
+	public IRCListener() {
 	}
-	
+	/*
+	@Override
 	public void onMessage(String channel, String sender ,String login, String hostname, String message) {
 		sendMessage(channel, "test");
 	
@@ -18,4 +18,5 @@ public class IRCBot extends PircBot {
 			BotMain.ircLogger.error("Message sent!");
 		}
 	}
+	*/
 }
