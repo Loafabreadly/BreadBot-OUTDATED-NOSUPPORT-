@@ -20,15 +20,18 @@ public class BotMain {
 	static ConfigFile config;
 	static StatsFile stats;
 	static JDA jda;
+	static String version;
+	
 	public static void main(String[] args) throws  FileNotFoundException, IOException, ConfigurationException, LoginException, IllegalArgumentException {
-		
 		config = new ConfigFile();
 		stats = new StatsFile();
 		jda = new JDABuilder(ConfigFile.getEmail(), ConfigFile.getPassword()).buildAsync();
 		jda.addEventListener(new ChatEvent(jda));
 		jda.addEventListener(new APIReadyEvent());
 		start = System.currentTimeMillis();
-		discordLogger.info("Bot Booted succesfully and logged in");
+		discordLogger.error("Bot Booted succesfully and logged in");
+		IRCMain.setup();
+		version =  ConfigFile.config.getString("Version");
 
 	}
 

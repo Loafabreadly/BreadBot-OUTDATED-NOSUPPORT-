@@ -30,4 +30,7 @@ public class ConfigFile {
 	public static BigInteger getHomeChannel() {
 		return config.getBigInteger("Home_Channel_ID");
 	}
+	public static boolean getShouldEnable() {
+		return config.getBoolean("Twitch_Enable");
+	}
 }
