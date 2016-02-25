@@ -20,7 +20,6 @@ public class BotMain {
 	static ConfigFile config;
 	static StatsFile stats;
 	static JDA jda;
-	
 	public static void main(String[] args) throws  FileNotFoundException, IOException, ConfigurationException, LoginException, IllegalArgumentException {
 		
 		config = new ConfigFile();
