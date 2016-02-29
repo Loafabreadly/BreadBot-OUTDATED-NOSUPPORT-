@@ -7,27 +7,29 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 
 public class IRCMain {
+	static PircBotX irc;
+	
 	/*
-	public static void setup() {
-		
-		IRCListener irc = new IRCListener();
-		if (shouldEnable()) {
-			
-			irc.doingRelay = true;
-			irc.setVerbose(true);
-			
-			try {
-				irc.connect("irc.twitch.tv", 6667, ConfigFile.config.getString("Twitch_OAuth"));
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			irc.joinChannel(ConfigFile.config.getString("Twitch_Channel"));
-		}
-		else {
-			return;
-		}
+	 * Main method for creation of IRC Bot
+	 */
+	public static void setup() throws IOException, IrcException {
+		@SuppressWarnings("deprecation")
+		Configuration config = new Configuration.Builder()
+				.setName("Birdy_Bot")
+				.setServerHostname("irc.twitch.tv")
+				.setServerPort(6667)
+				.setServerPassword(ConfigFile.config.getString("Twitch_OAuth"))
+				.addAutoJoinChannel("#" + ConfigFile.config.getString("Twitch_Channel"))
+				.addListener(new IRCListener())
+				.buildConfiguration();
+				
+		irc = new PircBotX(config);
+		irc.startBot();
 	}
-	*/
+	
+	/*
+	 * Debug main method for running just the IRC Bot (Should never be used)
+	 */
 	public static void main(String[] args) throws IOException, IrcException {
 		
 		@SuppressWarnings("deprecation")
@@ -35,12 +37,12 @@ public class IRCMain {
 				.setName("Birdy_Bot")
 				.setServerHostname("irc.twitch.tv")
 				.setServerPort(6667)
-				.setServerPassword("oauth:ivguqiyw1o9buvsrwybgnk44fr22m8")
-				.addAutoJoinChannel("#Birdgeek3")//ConfigFile.config.getString("Twitch_Channel"))
+				.setServerPassword(ConfigFile.config.getString("Twitch_OAuth"))
+				.addAutoJoinChannel("#" + ConfigFile.config.getString("Twitch_Channel"))
 				.addListener(new IRCListener())
 				.buildConfiguration();
 				
-		PircBotX irc = new PircBotX(config);
+		irc = new PircBotX(config);
 		irc.startBot();
 		
 	}
@@ -48,4 +50,5 @@ public class IRCMain {
 	public static boolean shouldEnable() {
 		return ConfigFile.getShouldEnable();
 	}
+
 }
