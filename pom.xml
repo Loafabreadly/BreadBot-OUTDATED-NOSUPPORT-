@@ -17,16 +17,6 @@
 
 <dependencies>
 	<dependency>
-		<groupId>org.apache.logging.log4j</groupId>
-		<artifactId>log4j-api</artifactId>
-		<version>2.5</version>
-	</dependency>
-	<dependency>
-		<groupId>org.apache.logging.log4j</groupId>
-		<artifactId>log4j-core</artifactId>
-		<version>2.5</version>
-	</dependency>
-	<dependency>
 		<groupId>com.github.taksan</groupId>
 		<artifactId>skype-java-api</artifactId>
 		<version>1.4</version>
@@ -48,10 +38,10 @@
 		<version>1.2.2_139</version>
 	</dependency>    
 	<dependency>
-		<groupId>pircbot</groupId>
-		<artifactId>pircbot</artifactId>
-		<version>1.5.0</version>
-	</dependency>
+        <groupId>org.pircbotx</groupId>
+        <artifactId>pircbotx</artifactId>
+        <version>2.1</version>
+	</dependency>	
 </dependencies>
     
 <repositories>

@@ -22,5 +22,9 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/birdg/Downloads/Logback/logback-1.1.5/logback-classic-1.1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/birdg/Downloads/Logback/logback-1.1.5/logback-core-1.1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/birdg/Downloads/Logback/logback-1.1.5/logback-examples/logback-examples-1.1.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/birdg/Downloads/SLF/slf4j-1.7.18/slf4j-api-1.7.18.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

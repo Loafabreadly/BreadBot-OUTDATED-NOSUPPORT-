@@ -47,4 +47,7 @@ public class ConfigFile {
 			}
 		}
 	}
+	public static boolean getShouldEnable() {
+		return config.getBoolean("Twitch_Enable");
+	}
 }

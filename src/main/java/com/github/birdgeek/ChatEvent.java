@@ -23,18 +23,24 @@ public class ChatEvent extends ListenerAdapter {
 			"disconnect", "kill", "flip", "uptime", "currenttime"
 			, "reload"
 			};
+	
 	public ChatEvent(JDA jda) {
 		this.api = jda;
 	}
 	
+	/*
+	 * On Discord Message Received
+	 * @see net.dv8tion.jda.hooks.ListenerAdapter#onMessageReceived(net.dv8tion.jda.events.message.MessageReceivedEvent)
+	 */
 	public void onMessageReceived(MessageReceivedEvent e) {
+		
 		if (e.getMessage().isPrivate()) {
 			
 			if (e.getAuthor().getUsername().equalsIgnoreCase(ConfigFile.config.getString("Owner"))) {
 				
 				switch (e.getMessage().getContent()) {
 				
-				case "#stats":
+				case "#stats": //prints out from the stats file
 					StatsFile.readKeys(e);
 					try {
 						
@@ -42,12 +48,30 @@ public class ChatEvent extends ListenerAdapter {
 					} catch (ConfigurationException e1) {
 						e1.printStackTrace();
 					}
+					break;
+					
+				case "#config": //Edit the config from discord PM's
+					String[] configEditCmd = e.getMessage().getContent().substring(7).split(":");
+					if (configEditCmd[0].equalsIgnoreCase("edit")) {
+						
+						switch (configEditCmd[1]) {
+						
+						case "toggleirc": //Toggle the IRC Relay
+							boolean relay = !ConfigFile.config.getBoolean("IRC_Relay");
+							ConfigFile.config.setProperty("IRC_Relay", relay);
+							e.getTextChannel().sendMessage("IRC Relay is now = " + relay);
+							break;
+						}
+					}
+					//Some other second string
+					break;
 				}
 			}
 			e.getAuthor().getPrivateChannel().sendMessage("Sorry you don't have access!");
 		}
 		else {
 			
+		//TODO catch the DiscordConsoleOut stream properly
 		switch (e.getMessage().getContent()) {
 		
 		case "#ping":
@@ -87,7 +111,8 @@ public class ChatEvent extends ListenerAdapter {
 					StatsFile.updateCount("kill");
 				} catch (ConfigurationException e1) {
 					e1.printStackTrace();
-				}				
+				}
+				IRCMain.irc.close();
 				api.shutdown(true);
 			}
 			else {
@@ -199,10 +224,12 @@ public class ChatEvent extends ListenerAdapter {
 				e.getChannel().sendMessage("Channel ID: " + api.getTextChannelById("" + ConfigFile.getHomeChannel()).getId());
 				e.getChannel().sendMessage("Channel Name: " + api.getTextChannelById("" + ConfigFile.getHomeChannel()).getName());
 				e.getChannel().sendMessage("Debug Mode: " + api.isDebug());
+				/*
 				BotMain.setupConsoleOut();
 				DiscordConsoleStream.println("Test Out");
 				BotMain.stream.enableRedirect(false);
 				System.out.println("Test 2");
+				*/
 			}
 		}
 		}

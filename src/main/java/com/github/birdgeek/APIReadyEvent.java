@@ -8,7 +8,6 @@ import net.dv8tion.jda.hooks.EventListener;
 public class APIReadyEvent implements EventListener {
 	static boolean isReady = false;
 
-	@Override
 	public void onEvent(Event event) {
 		if (event instanceof ReadyEvent) {
 			System.out.println("Ready");
