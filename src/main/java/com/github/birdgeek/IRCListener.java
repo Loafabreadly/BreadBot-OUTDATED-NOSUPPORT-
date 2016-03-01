@@ -25,7 +25,7 @@ public class IRCListener extends ListenerAdapter {
 		 * Send the IRC message to discord
 		 */
 		if (doingRelay()) {
-			e.respondChannel("Message Relayed");
+			//e.respondChannel("Message Relayed"); //DEBUG
 			BotMain.jda.getTextChannelById("" + ConfigFile.config.getBigInteger("Home_Channel_ID"))
 			.sendMessage(
 					"{" + e.getChannel().getName() + "}" +

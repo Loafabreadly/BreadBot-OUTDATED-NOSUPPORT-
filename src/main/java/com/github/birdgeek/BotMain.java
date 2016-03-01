@@ -29,6 +29,7 @@ public class BotMain {
 		jda = new JDABuilder(ConfigFile.getEmail(), ConfigFile.getPassword()).buildAsync(); //Builds the discord bot
 		jda.addEventListener(new ChatEvent(jda));
 		jda.addEventListener(new APIReadyEvent());
+		jda.addEventListener(new InviteEvent());
 		start = System.currentTimeMillis();
 		try { //Tries to build IRC bot
 			IRCMain.setup();

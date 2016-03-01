@@ -1,8 +1,6 @@
 package com.github.birdgeek;
 
 
-import java.io.FileWriter;
-import java.io.IOException;
 import java.math.BigInteger;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -33,20 +31,7 @@ public class ConfigFile {
 	public static BigInteger getHomeChannel() {
 		return config.getBigInteger("Home_Channel_ID");
 	}
-	static void startup() throws IOException {
-		if (config ==  null) {
-				FileWriter write = new FileWriter(defaultFileName);
-				write.flush();
-		}
-		else {
-			
-			try {
-				config.load(defaultFileName);
-			} catch (ConfigurationException e) {
-				e.printStackTrace();
-			}
-		}
-	}
+	
 	public static boolean getShouldEnable() {
 		return config.getBoolean("Twitch_Enable");
 	}
