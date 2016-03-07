@@ -2,14 +2,14 @@ package com.github.birdgeek;
 
 import net.dv8tion.jda.events.Event;
 import net.dv8tion.jda.events.InviteReceivedEvent;
-import net.dv8tion.jda.hooks.EventListener;
+import net.dv8tion.jda.hooks.ListenerAdapter;
 import net.dv8tion.jda.utils.InviteUtil;
 
-public class InviteEvent implements EventListener {
+public class InviteEvent extends ListenerAdapter {
 	
 	public void onInviteReceived(InviteReceivedEvent event) {
 		if (isApprovedUser(event.getAuthor().getUsername())) {
-			InviteUtil.join(event.getInvite(), BotMain.jda);
+			InviteUtil.join(event.getInvite(), BotMain.jda, null);
 		}
 		
 	}

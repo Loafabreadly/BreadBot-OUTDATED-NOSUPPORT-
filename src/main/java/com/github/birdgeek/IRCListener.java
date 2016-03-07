@@ -19,6 +19,7 @@ public class IRCListener extends ListenerAdapter {
 			boolean relay = ConfigFile.config.getBoolean("IRC_Relay");
 			ConfigFile.config.setProperty("IRC_Relay", !relay);
 			e.respondChannel("Now doing relay = " + doingRelay()); //DEBUG
+			BotMain.ircLog.info("Relay is now: " + doingRelay());
 		}
 		
 		/*
@@ -26,7 +27,7 @@ public class IRCListener extends ListenerAdapter {
 		 */
 		if (doingRelay()) {
 			//e.respondChannel("Message Relayed"); //DEBUG
-			BotMain.jda.getTextChannelById("" + ConfigFile.config.getBigInteger("Home_Channel_ID"))
+			BotMain.jda.getTextChannelById("" + ConfigFile.config.getBigInteger("IRC_Channel_ID"))
 			.sendMessage(
 					"{" + e.getChannel().getName() + "}" +
 					" [" + e.getUser().getNick() + "] " + 

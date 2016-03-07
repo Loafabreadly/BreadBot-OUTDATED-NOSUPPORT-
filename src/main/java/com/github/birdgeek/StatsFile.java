@@ -22,11 +22,13 @@ public class StatsFile {
 	public int getStats(String cmd) {
 		return stats.getInt(cmd);
 	}
-	static public void readKeys() {
+	
+	static public void readKeysToConsole() {
 		for (int i=0; i < ChatEvent.availableCommands.length; i++) {
-			DiscordConsoleStream.println(ChatEvent.availableCommands[i].toString() + " = " +stats.getInt(ChatEvent.availableCommands[i]));
+			BotMain.discordLog.info(ChatEvent.availableCommands[i].toString() + " = " +stats.getInt(ChatEvent.availableCommands[i]));
 		}
 	}
+	
 	static public void readKeys(MessageReceivedEvent e) {
 		Message mess = null;
 		for (int i=0; i < ChatEvent.availableCommands.length; i++) {
@@ -34,6 +36,7 @@ public class StatsFile {
 		}
 		e.getChannel().sendMessage(mess);
 	}
+	
 	static public void updateCount(String cmd) throws ConfigurationException {
 		int i = stats.getInt(cmd);
 		stats.setProperty(cmd, i + 1);

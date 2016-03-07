@@ -4,12 +4,16 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 import org.apache.commons.configuration.ConfigurationException;
 
 import net.dv8tion.jda.JDA;
+import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
+import net.dv8tion.jda.utils.SimpleLog;
 
 public class ChatEvent extends ListenerAdapter {
 
@@ -21,7 +25,7 @@ public class ChatEvent extends ListenerAdapter {
 	static String[] availableCommands = {
 			"help", "globalhelp", "dev", "ping", "stats", 
 			"disconnect", "kill", "flip", "uptime", "currenttime"
-			, "reload"
+			, "reload", "config"
 			};
 	
 	public ChatEvent(JDA jda) {
@@ -51,7 +55,9 @@ public class ChatEvent extends ListenerAdapter {
 					break;
 					
 				case "#config": //Edit the config from discord PM's
-					String[] configEditCmd = e.getMessage().getContent().substring(7).split(":");
+					String[] configEditCmd = e.getMessage().getContent().substring(7).split(":"); 
+					//each part of the editing process needs to be
+					//split up by ":"
 					if (configEditCmd[0].equalsIgnoreCase("edit")) {
 						
 						switch (configEditCmd[1]) {
@@ -61,17 +67,41 @@ public class ChatEvent extends ListenerAdapter {
 							ConfigFile.config.setProperty("IRC_Relay", relay);
 							e.getTextChannel().sendMessage("IRC Relay is now = " + relay);
 							break;
+							
+						case "+user":
+							ArrayList<String> users = new ArrayList<String>(Arrays.asList(ConfigFile.config.getStringArray("Approved_Users")));
+							String testUser = configEditCmd[3];
+							
+							for (int i=0; i< configEditCmd[3].split(",").length; i++) {
+								users.add(configEditCmd[3].split(",")[i]);
+								BotMain.discordLog.info("Trying to update Approved Users");
+							}
+							if (isApprovedUser(testUser)) {
+								BotMain.discordLog.info("Success in Updating Approved Users");
+								e.getPrivateChannel().sendMessage("Update Success!");
+							}
+							else {
+								BotMain.discordLog.warn("Failed the test");
+								e.getPrivateChannel().sendMessage("It failed the test");
+							}
+							break;
 						}
+					}
+					if (configEditCmd[0].equalsIgnoreCase("relayValue")) {
+						e.getPrivateChannel().sendMessage((String) ConfigFile.config.getProperty(configEditCmd[2]));
+						
 					}
 					//Some other second string
 					break;
 				}
 			}
-			e.getAuthor().getPrivateChannel().sendMessage("Sorry you don't have access!");
+			else {
+				
+			}
+			e.getAuthor().getPrivateChannel().sendMessage("Sorry something went wrong!");
 		}
 		else {
 			
-		//TODO catch the DiscordConsoleOut stream properly
 		switch (e.getMessage().getContent()) {
 		
 		case "#ping":
@@ -87,7 +117,7 @@ public class ChatEvent extends ListenerAdapter {
 		
 		case "#disconnect":
 			if (isApprovedUser(getUsername(e))) {
-				DiscordConsoleStream.println(e.getAuthor().getUsername() + " has stopped the bot!");
+				BotMain.discordLog.info(e.getAuthor().getUsername() + " has stopped the bot!");
 				delMessage(e);
 				try {
 					
@@ -104,7 +134,7 @@ public class ChatEvent extends ListenerAdapter {
 			
 		case "#kill":
 			if (isApprovedUser(getUsername(e))) {
-				DiscordConsoleStream.println(e.getAuthor().getUsername() + " has killed the bot!");
+				BotMain.discordLog.info(e.getAuthor().getUsername() + " has killed the bot!");
 				delMessage(e);
 				try {
 					
@@ -219,22 +249,30 @@ public class ChatEvent extends ListenerAdapter {
 			
 		case "#debug":
 			if (isApprovedUser(getUsername(e))) {
-				e.getChannel().sendMessage("Server ID: " + api.getGuildById("" + ConfigFile.getHomeChannel())).getId();
-				e.getChannel().sendMessage("Server Name: " + api.getGuildById("" + ConfigFile.getHomeServer()).getName());
-				e.getChannel().sendMessage("Channel ID: " + api.getTextChannelById("" + ConfigFile.getHomeChannel()).getId());
-				e.getChannel().sendMessage("Channel Name: " + api.getTextChannelById("" + ConfigFile.getHomeChannel()).getName());
-				e.getChannel().sendMessage("Debug Mode: " + api.isDebug());
-				/*
-				BotMain.setupConsoleOut();
-				DiscordConsoleStream.println("Test Out");
-				BotMain.stream.enableRedirect(false);
-				System.out.println("Test 2");
-				*/
+				
+				e.getChannel().sendMessage(new MessageBuilder()
+						.appendCodeBlock(
+						"Server ID: " + api.getGuildById(e.getGuild().getId()).getId() + "\n"
+						+ "Server Name: " + api.getGuildsByName(e.getGuild().getName()) + "\n"
+						+ "Channel ID: " + e.getTextChannel().getId() + "\n"
+						+ "Channel Name: " + e.getTextChannel().getName() + "\n"
+						+ "Debug Mode: " + SimpleLog.isConsolePresent()
+						, "java")
+						.build());
+				
+				BotMain.discordLog.trace(e.getAuthor().getUsername() + "  issue the debug command!");
+			}
+			break;
+		
+		case "#getChannel":
+			if (isApprovedUser(getUsername(e))) {
+				e.getAuthor().getPrivateChannel().sendMessage("ID For : '" + e.getTextChannel().getName() + "' is: " + e.getTextChannel().getId());
 			}
 		}
 		}
 	}
 
+	//TODO: Comment all these functions below
 	private void delMessage(MessageReceivedEvent e) {
 		if (ConfigFile.config.getBoolean("delcmd")) {
 			e.getMessage().deleteMessage();
@@ -242,16 +280,19 @@ public class ChatEvent extends ListenerAdapter {
 	}
 
 	private void sendGlobalHelp(MessageReceivedEvent e) {
-		e.getTextChannel().sendMessage("Welcome to the help command! Below are all the commands you can run!");
-		e.getTextChannel().sendMessage(getHelpCommands());
+		e.getTextChannel().sendMessage(new MessageBuilder()
+				.appendString("Welcome to the help command! Below are all the commands you can run!")
+				.appendCodeBlock(getHelpCommands(), "java")
+				.build());
 		
 	}
 
 	private void sendHelp(MessageReceivedEvent e) {
 		e.getAuthor().getPrivateChannel().sendMessage("Welcome to the help command! Below are all the commands you can run!");
-		e.getAuthor().getPrivateChannel().sendMessage(getHelpCommands());
+		e.getAuthor().getPrivateChannel().sendMessage(new MessageBuilder().appendCodeBlock(getHelpCommands(), "java").build());
 		
 	}
+	
 	private void sendUptime(MessageReceivedEvent e) {
 		long different = System.currentTimeMillis() - BotMain.start;
 		long secondsInMilli = 1000;
@@ -295,10 +336,10 @@ public class ChatEvent extends ListenerAdapter {
 			return everything;
 		}
 		catch (FileNotFoundException ex) {
-			DiscordConsoleStream.println("Unable to open file: " + helpFileName);
+			BotMain.discordLog.info("Unable to open file: " + helpFileName);
 		}
 		catch (IOException ex) {
-			DiscordConsoleStream.println("Error reading file");
+			BotMain.discordLog.info("Error reading file");
 		}
 		return "It must have failed on me :(";
 	}

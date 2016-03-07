@@ -10,4 +10,12 @@
 #kill - Force quits the bot (and the program)
 #reload - Will reload the config.cfg file
 #debug - Outputs a bunch of stuff only useful to me
+
+Some Commands can be done only through private Messages:
+#config - Used to edit or read the values of the config
+	-edit
+		-'toggleirc'
+		-'+user'
+	-relayValue:[key]
+#stats - reads out all Stats for all commands
 ----------------------------------------

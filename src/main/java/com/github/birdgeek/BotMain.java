@@ -11,33 +11,43 @@ import org.pircbotx.exception.IrcException;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.MessageBuilder;
+import net.dv8tion.jda.utils.SimpleLog;
 
 public class BotMain {
 	static long start;
 	static ConfigFile config;
 	static StatsFile stats;
 	static JDA jda;
-	static DiscordConsoleStream stream;
 	static String version;
+	static SimpleLog discordLog;
+	static SimpleLog ircLog;
 	
 	/*
 	 * Main method  for all bots
 	 */
-	public static void main(String[] args) throws  FileNotFoundException, IOException, ConfigurationException, LoginException, IllegalArgumentException {
+	public static void main(String[] args) throws  FileNotFoundException, IOException, ConfigurationException, LoginException, IllegalArgumentException, InterruptedException {
 		config = new ConfigFile();
 		stats = new StatsFile();
-		jda = new JDABuilder(ConfigFile.getEmail(), ConfigFile.getPassword()).buildAsync(); //Builds the discord bot
-		jda.addEventListener(new ChatEvent(jda));
-		jda.addEventListener(new APIReadyEvent());
-		jda.addEventListener(new InviteEvent());
 		start = System.currentTimeMillis();
-		try { //Tries to build IRC bot
-			IRCMain.setup();
-		} catch (IrcException e) {
-			e.printStackTrace();
-		}
 		version =  ConfigFile.config.getString("Version");
+		discordLog = SimpleLog.getLog("Discord Log");
+		ircLog = SimpleLog.getLog("IRC Log");
+		discordLog.setLevel(SimpleLog.Level.DEBUG);
+		discordLog.debug("test");
+		
+		jda = new JDABuilder(ConfigFile.getEmail(), ConfigFile.getPassword())
+				.addListener(new APIReadyEvent())
+				.addListener(new ChatEvent(jda))
+				.addListener(new InviteEvent())
+				.buildAsync(); //Builds the discord bot
 
+		if (ConfigFile.config.getBoolean("Twitch_Enable")) { //Should we enable the IRC portion?
+				try { //Tries to build IRC bot
+					IRCMain.setup();
+				} catch (IrcException e) {
+					e.printStackTrace();
+				}
+		}
 	}
 
 	/*
@@ -46,25 +56,19 @@ public class BotMain {
 	public static void sendWelcome() {
 		
 		jda.getTextChannelById("" + ConfigFile.getHomeChannel()).sendMessage(new MessageBuilder()
-				.appendString("Welcome to Bread Bot!")
-				.appendCodeBlock("Version: " + ConfigFile.config.getString("Version"), "java")
+				.appendCodeBlock("Welcome to Bread Bot! \n"
+						+ "Version: " + ConfigFile.config.getString("Version")
+						, "java")
 				.build());
 		
 		if (ConfigFile.config.getBoolean("Send_Welcome_Mention")) { //Should we mention the Owner
 			jda.getTextChannelById("" + ConfigFile.getHomeChannel()).sendMessage(new MessageBuilder()
-					.appendString("I am being written by ")
+					.appendString("I am being run by ")
 					.appendMention(jda.getUsersByName(ConfigFile.config.getString("Owner")).get(0))
 					.build());
 		}
+		
 		jda.getTextChannelById("" + ConfigFile.getHomeChannel()).sendMessage("You can read more about me here - http://birdgeek.github.io/BreadBot/");
-		}
-	/*
-	 * Redirects all System.out to home discord channel
-	 */
-	static void setupConsoleOut() {
-		if (ConfigFile.config.getBoolean("Console_Out")) {
-			stream = new DiscordConsoleStream(jda.getTextChannelById("" + ConfigFile.getHomeChannel()), true);
-			DiscordConsoleStream.println("" + ConfigFile.config.getBoolean("Console_Out"));
-		}
 	}
+	
 }

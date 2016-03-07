@@ -13,11 +13,10 @@ public class IRCMain {
 	 * Main method for creation of IRC Bot
 	 */
 	public static void setup() throws IOException, IrcException {
-		@SuppressWarnings("deprecation")
+		
 		Configuration config = new Configuration.Builder()
 				.setName("Birdy_Bot")
-				.setServerHostname("irc.twitch.tv")
-				.setServerPort(6667)
+				.addServer("irc.twitch.tv", 6667)
 				.setServerPassword(ConfigFile.config.getString("Twitch_OAuth"))
 				.addAutoJoinChannel("#" + ConfigFile.config.getString("Twitch_Channel"))
 				.addListener(new IRCListener())
@@ -32,11 +31,9 @@ public class IRCMain {
 	 */
 	public static void main(String[] args) throws IOException, IrcException {
 		
-		@SuppressWarnings("deprecation")
 		Configuration config = new Configuration.Builder()
 				.setName("Birdy_Bot")
-				.setServerHostname("irc.twitch.tv")
-				.setServerPort(6667)
+				.addServer("irc.twitch.tv", 6667)
 				.setServerPassword(ConfigFile.config.getString("Twitch_OAuth"))
 				.addAutoJoinChannel("#" + ConfigFile.config.getString("Twitch_Channel"))
 				.addListener(new IRCListener())
