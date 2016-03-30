@@ -8,7 +8,6 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class ConfigFile {
 	static String filename = "myConfig.cfg";
-	static String defaultFileName = "target/config.cfg";
 	static PropertiesConfiguration config;
 	
 	public ConfigFile () throws ConfigurationException {

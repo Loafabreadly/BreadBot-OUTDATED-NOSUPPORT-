@@ -6,6 +6,7 @@ import org.pircbotx.hooks.events.MessageEvent;
 
 public class IRCListener extends ListenerAdapter {
 
+	String[] ircCommands = {"help", "toggle", "h"};
 	/*
 	 * On IRC Message Received
 	 * @see org.pircbotx.hooks.ListenerAdapter#onMessage(org.pircbotx.hooks.events.MessageEvent)
@@ -26,14 +27,31 @@ public class IRCListener extends ListenerAdapter {
 		 * Send the IRC message to discord
 		 */
 		if (doingRelay()) {
-			//e.respondChannel("Message Relayed"); //DEBUG
-			BotMain.jda.getTextChannelById("" + ConfigFile.config.getBigInteger("IRC_Channel_ID"))
-			.sendMessage(
-					"{" + e.getChannel().getName() + "}" +
-					" [" + e.getUser().getNick() + "] " + 
-					e.getMessage());
+			if (!isCommand(e)) {
+				BotMain.jda.getTextChannelById("" + ConfigFile.config.getBigInteger("IRC_Channel_ID"))
+				.sendMessage(
+						"{" + e.getChannel().getName() + "}" +
+						" [" + e.getUser().getNick() + "] " + 
+						e.getMessage());
+			}
 		}
+	}
+	
+	//Should we relay the command?
+	private boolean isCommand(MessageEvent e) {
+		
+		for (int i=0; i<ircCommands.length; i++) {
+			
+			if (e.getMessage().equalsIgnoreCase(ircCommands[i])) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
+		return false;
+	}
+	
 	/*
 	 * Should we be relaying the IRC chat to the discord channel?
 	 */

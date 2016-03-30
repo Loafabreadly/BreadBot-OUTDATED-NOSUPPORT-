@@ -11,7 +11,6 @@ the next few months and will eventually release beta builds when I feel it can b
 - More commands
 	- IRC Bridge
 	    - Yes i want it talking everywhere
-	- Skype Bridge
 	- Voice
 	- Music Player
 	- Coin Flip
