@@ -14,24 +14,69 @@ public class ConfigFile {
 		ConfigFile.config = new PropertiesConfiguration(filename);
 	}
 	
+	/*
+	 * String Arrays
+	 */
 	public static String[] getApprovedUsers() {
 		return config.getStringArray("Approved_Users");
 	}
 	
+	public static String[] getApprovedIRCUsers() {
+		return config.getStringArray("Approved_IRC_Users");
+	}
+	/*
+	 * Strings
+	 */
 	public static String getEmail() throws ConfigurationException {
 		return config.getString("Email");
 	}
+	
 	public static String getPassword() throws ConfigurationException {
 		return config.getString("Password");
 	}
-	public static BigInteger getHomeServer() {
-		return config.getBigInteger("Home_Server_ID");
-	}
-	public static BigInteger getHomeChannel() {
-		return config.getBigInteger("Home_Channel_ID");
+	
+	public static String getVersion() {
+		return config.getString("Version");
 	}
 	
-	public static boolean getShouldEnable() {
+	public static String getTwitchChannel() {
+		return config.getString("Twitch_Channel");
+	}
+	
+	public static String getOAuth() {
+		return config.getString("Twitch_OAuth");
+	}
+	/*
+	 * Booleans
+	 */
+	public static boolean shouldEnableTwitch() {
 		return config.getBoolean("Twitch_Enable");
 	}
+	
+	public static boolean shouldDelete() {
+		return config.getBoolean("delcmd");
+	}
+	
+	public static boolean shouldSendWelcomeMention() {
+		return config.getBoolean("Send_Welcome_Mention");
+	}	
+	public static boolean shouldIrcRelay() {
+		return config.getBoolean("IRC_Relay");
+	}
+	
+	/*
+	 * Ints
+	 */
+	public static BigInteger getHomeGuild() {
+		return config.getBigInteger("Home_Guild_ID");
+	}
+	
+	public static BigInteger getHomeChannel() {
+		return config.getBigInteger("Home_Channel_ID");
+	}	
+	
+	public static BigInteger getOwnerID() {
+		return config.getBigInteger("Owner_ID");
+	}
+
 }

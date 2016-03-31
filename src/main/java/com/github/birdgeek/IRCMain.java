@@ -17,8 +17,13 @@ public class IRCMain {
 		Configuration config = new Configuration.Builder()
 				.setName("Birdy_Bot")
 				.addServer("irc.twitch.tv", 6667)
+<<<<<<< HEAD
 				.setServerPassword(ConfigFile.config.getString("Twitch_OAuth"))
 				.addAutoJoinChannel("#" + ConfigFile.config.getString("Twitch_Channel"))
+=======
+				.setServerPassword(ConfigFile.getOAuth())
+				.addAutoJoinChannel("#" + ConfigFile.getTwitchChannel())
+>>>>>>> 83ccf321d3a72923b2cc63704369724a738d8c88
 				.addListener(new IRCListener())
 				.buildConfiguration();
 				
@@ -34,8 +39,13 @@ public class IRCMain {
 		Configuration config = new Configuration.Builder()
 				.setName("Birdy_Bot")
 				.addServer("irc.twitch.tv", 6667)
+<<<<<<< HEAD
 				.setServerPassword(ConfigFile.config.getString("Twitch_OAuth"))
 				.addAutoJoinChannel("#" + ConfigFile.config.getString("Twitch_Channel"))
+=======
+				.setServerPassword(ConfigFile.getOAuth())
+				.addAutoJoinChannel("#" + ConfigFile.getTwitchChannel())
+>>>>>>> 83ccf321d3a72923b2cc63704369724a738d8c88
 				.addListener(new IRCListener())
 				.buildConfiguration();
 				
@@ -45,7 +55,11 @@ public class IRCMain {
 	}
 
 	public static boolean shouldEnable() {
+<<<<<<< HEAD
 		return ConfigFile.getShouldEnable();
+=======
+		return ConfigFile.shouldEnableTwitch();
+>>>>>>> 83ccf321d3a72923b2cc63704369724a738d8c88
 	}
 
 }
