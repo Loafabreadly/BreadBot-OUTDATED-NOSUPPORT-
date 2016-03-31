@@ -32,7 +32,7 @@ public class BotMain {
 		config = new ConfigFile();
 		stats = new StatsFile();
 		start = System.currentTimeMillis();
-		version =  ConfigFile.config.getString("Version");
+		version =  ConfigFile.getVersion();
 		discordLog = SimpleLog.getLog("Discord Log");
 		ircLog = SimpleLog.getLog("IRC Log");
 		discordLog.setLevel(SimpleLog.Level.DEBUG);
@@ -47,7 +47,7 @@ public class BotMain {
 		sendWelcome();
 		goLive();
 
-		if (ConfigFile.config.getBoolean("Twitch_Enable")) { //Should we enable the IRC portion?
+		if (ConfigFile.shouldEnableTwitch()) { //Should we enable the IRC portion?
 				try { //Tries to build IRC bot
 					IRCMain.setup();
 				} catch (IrcException e) {
@@ -102,7 +102,7 @@ public static void goLive(){
 	sendMessage(new MessageBuilder().appendCodeBlock(""
 			+ "Home Channel: " + ConfigFile.getHomeChannel() + "/" + jda.getTextChannelById("" + ConfigFile.getHomeChannel()).getName()
 			+ "\nHome Guild:" + ConfigFile.getHomeGuild() + "/" + jda.getGuildById("" + ConfigFile.getHomeGuild()).getName()
-			+ "\nOwner: " + ConfigFile.config.getString("Owner_ID")
+			+ "\nOwner: " + ConfigFile.getOwnerID()
 			, "python")
 			.build());
 	
@@ -116,6 +116,7 @@ public static void goLive(){
 	public static void sendMessage(Message message) {
 		jda.getTextChannelById("" +ConfigFile.getHomeChannel()).sendMessage(message);
 	}
+	
 	/*
 	 * Sends on connect welcome to home discord channel
 	 */
@@ -124,14 +125,14 @@ public static void goLive(){
 		jda.getTextChannelById("" + ConfigFile.getHomeChannel()).sendMessage(
 				new MessageBuilder()
 				.appendCodeBlock("Welcome to Bread Bot! \n"
-						+ "Version: " + ConfigFile.config.getString("Version")
+						+ "Version: " + ConfigFile.getVersion()
 						, "java")
 				.build());
 		
-		if (ConfigFile.config.getBoolean("Send_Welcome_Mention")) { //Should we mention the Owner
+		if (ConfigFile.shouldSendWelcomeMention()) { //Should we mention the Owner
 			jda.getTextChannelById("" + ConfigFile.getHomeChannel()).sendMessage(new MessageBuilder()
 					.appendString("I am being run by ")
-					.appendMention(jda.getUsersByName(ConfigFile.config.getString("Owner_ID")).get(0))
+					.appendMention(jda.getUserById("" + ConfigFile.getOwnerID()))
 					.build());
 		}
 		

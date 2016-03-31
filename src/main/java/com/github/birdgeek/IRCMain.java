@@ -17,8 +17,8 @@ public class IRCMain {
 		Configuration config = new Configuration.Builder()
 				.setName("Birdy_Bot")
 				.addServer("irc.twitch.tv", 6667)
-				.setServerPassword(ConfigFile.config.getString("Twitch_OAuth"))
-				.addAutoJoinChannel("#" + ConfigFile.config.getString("Twitch_Channel"))
+				.setServerPassword(ConfigFile.getOAuth())
+				.addAutoJoinChannel("#" + ConfigFile.getTwitchChannel())
 				.addListener(new IRCListener())
 				.buildConfiguration();
 				
@@ -34,8 +34,8 @@ public class IRCMain {
 		Configuration config = new Configuration.Builder()
 				.setName("Birdy_Bot")
 				.addServer("irc.twitch.tv", 6667)
-				.setServerPassword(ConfigFile.config.getString("Twitch_OAuth"))
-				.addAutoJoinChannel("#" + ConfigFile.config.getString("Twitch_Channel"))
+				.setServerPassword(ConfigFile.getOAuth())
+				.addAutoJoinChannel("#" + ConfigFile.getTwitchChannel())
 				.addListener(new IRCListener())
 				.buildConfiguration();
 				

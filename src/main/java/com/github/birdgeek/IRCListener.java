@@ -17,7 +17,7 @@ public class IRCListener extends ListenerAdapter {
 		 * Toggle between IRC relay on/off - Must be approved User
 		 */
 		if (e.getMessage().equalsIgnoreCase("#toggle") && isApprovedUser(e.getUser().getNick())) {
-			boolean relay = ConfigFile.config.getBoolean("IRC_Relay");
+			boolean relay = ConfigFile.shouldIrcRelay();
 			ConfigFile.config.setProperty("IRC_Relay", !relay);
 			e.respondChannel("Now doing relay = " + doingRelay()); //DEBUG
 			BotMain.ircLog.info("Relay is now: " + doingRelay());
@@ -40,9 +40,9 @@ public class IRCListener extends ListenerAdapter {
 	//Should we relay the command?
 	private boolean isCommand(MessageEvent e) {
 		
-		for (int i=0; i<ircCommands.length; i++) {
+		for (String ircCommand : ircCommands) {
 			
-			if (e.getMessage().equalsIgnoreCase(ircCommands[i])) {
+			if (e.getMessage().equalsIgnoreCase(ircCommand)) {
 				return true;
 			}
 			else {
@@ -56,15 +56,15 @@ public class IRCListener extends ListenerAdapter {
 	 * Should we be relaying the IRC chat to the discord channel?
 	 */
 	public boolean doingRelay() {
-		return ConfigFile.config.getBoolean("IRC_Relay");
+		return ConfigFile.shouldIrcRelay();
 	}
 
 	/*
 	 * Method for finding is a specific user is admin on Bot
 	 */
 	private boolean isApprovedUser(String username) {
-		for (int i=0; i < ConfigFile.config.getStringArray("Approved_IRC_Users").length; i++) {
-			if (username.equalsIgnoreCase(ConfigFile.config.getStringArray("Approved_IRC_Users")[i])) {
+		for (int i=0; i < ConfigFile.getApprovedIRCUsers().length; i++) {
+			if (username.equalsIgnoreCase(ConfigFile.getApprovedIRCUsers()[i])) {
 				return true;
 			}
 		}

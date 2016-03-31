@@ -40,7 +40,7 @@ public class ChatEvent extends ListenerAdapter {
 		
 		if (e.getMessage().isPrivate()) {
 			
-			if (e.getAuthor().getUsername().equalsIgnoreCase(ConfigFile.config.getString("Owner_ID"))) {
+			if (e.getAuthor().getUsername().equalsIgnoreCase("" + ConfigFile.getOwnerID())) {
 				
 				switch (e.getMessage().getContent()) {
 				
@@ -63,7 +63,7 @@ public class ChatEvent extends ListenerAdapter {
 						switch (configEditCmd[1]) {
 						
 						case "toggleirc": //Toggle the IRC Relay
-							boolean relay = !ConfigFile.config.getBoolean("IRC_Relay");
+							boolean relay = !ConfigFile.shouldIrcRelay();
 							ConfigFile.config.setProperty("IRC_Relay", relay);
 							e.getTextChannel().sendMessage("IRC Relay is now = " + relay);
 							break;
@@ -275,7 +275,7 @@ public class ChatEvent extends ListenerAdapter {
 
 	//TODO: Comment all these functions below
 	private void delMessage(MessageReceivedEvent e) {
-		if (ConfigFile.config.getBoolean("delcmd")) {
+		if (ConfigFile.shouldDelete()) {
 			e.getMessage().deleteMessage();
 		}
 	}

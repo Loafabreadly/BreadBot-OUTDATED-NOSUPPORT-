@@ -7,9 +7,9 @@ import net.dv8tion.jda.utils.InviteUtil;
 
 public class InviteEvent extends ListenerAdapter {
 	
-	public void onInviteReceived(InviteReceivedEvent event) {
+	public void onInviteReceived(InviteReceivedEvent event) { //TODO Test this out
 		if (isApprovedUser(event.getAuthor().getUsername())) {
-			InviteUtil.join(event.getInvite(), BotMain.jda, null);
+			InviteUtil.join(event.getInvite(), BotMain.jda, null); //ERROR May error out on Consumable
 		}
 		
 	}
