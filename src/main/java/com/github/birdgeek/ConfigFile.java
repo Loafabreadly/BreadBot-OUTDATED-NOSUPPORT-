@@ -13,6 +13,7 @@ public class ConfigFile {
 	public ConfigFile () throws ConfigurationException {
 		ConfigFile.config = new PropertiesConfiguration(filename);
 	}
+	
 	/*
 	 * String Arrays
 	 */

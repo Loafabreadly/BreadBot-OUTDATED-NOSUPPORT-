@@ -35,18 +35,17 @@ public class BotMain {
 		version =  ConfigFile.getVersion();
 		discordLog = SimpleLog.getLog("Discord Log");
 		ircLog = SimpleLog.getLog("IRC Log");
-		discordLog.setLevel(SimpleLog.Level.DEBUG);
-		discordLog.debug("test");
+		discordLog.setLevel(SimpleLog.Level.DEBUG); //TODO For releases; set this to a different lvl
+		discordLog.debug("Logging in using: " + ConfigFile.getEmail());
 		
 		jda = new JDABuilder(ConfigFile.getEmail(), ConfigFile.getPassword())
-				.addListener(new ChatEvent(jda))
-				.addListener(new InviteEvent())
-				.buildBlocking(); //Builds the discord bot
+				.addListener(new ChatEvent(jda, discordLog)) //Pass API and Specific Logger
+				.addListener(new InviteEvent()) //TODO Test invite Util
+				.buildBlocking(); //Builds the discord bot - Blocks everything until API is ready
 		
-		jda.getAccountManager().setGame("Breadbot V: " +version);
+		jda.getAccountManager().setGame("Breadbot V: " + version);
 		sendWelcome();
-		goLive();
-
+		
 		if (ConfigFile.shouldEnableTwitch()) { //Should we enable the IRC portion?
 				try { //Tries to build IRC bot
 					IRCMain.setup();
@@ -54,6 +53,8 @@ public class BotMain {
 					e.printStackTrace();
 				}
 		}
+		
+		goLive();
 	}
 
 public static void goLive(){
@@ -73,7 +74,7 @@ public static void goLive(){
 			case 'k':
 				
 				discordLog.debug("commanded to kill");
-				sendMessage( "Quiting from Console");
+				sendMessage("Quiting from Console");
 				shouldContinue = false;
 				break;
 				
@@ -97,7 +98,7 @@ public static void goLive(){
 		scanner.close();
 	}
 
-	private static void printDiagnostics() {
+	public static void printDiagnostics() {
 		
 	sendMessage(new MessageBuilder().appendCodeBlock(""
 			+ "Home Channel: " + ConfigFile.getHomeChannel() + "/" + jda.getTextChannelById("" + ConfigFile.getHomeChannel()).getName()
