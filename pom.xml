@@ -35,7 +35,7 @@
 	<dependency>
 		<groupId>net.dv8tion</groupId>
 		<artifactId>JDA</artifactId>
-		<version>1.3.0_188</version>
+		<version>1.3.0_230</version>
 	</dependency>    
 	<dependency>
         <groupId>org.pircbotx</groupId>

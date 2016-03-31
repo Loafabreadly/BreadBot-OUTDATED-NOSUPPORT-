@@ -45,7 +45,7 @@ public class IRCMain {
 	}
 
 	public static boolean shouldEnable() {
-		return ConfigFile.getShouldEnable();
+		return ConfigFile.shouldEnableTwitch();
 	}
 
 }

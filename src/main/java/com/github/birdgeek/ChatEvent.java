@@ -40,7 +40,7 @@ public class ChatEvent extends ListenerAdapter {
 		
 		if (e.getMessage().isPrivate()) {
 			
-			if (e.getAuthor().getUsername().equalsIgnoreCase(ConfigFile.config.getString("Owner"))) {
+			if (e.getAuthor().getUsername().equalsIgnoreCase(ConfigFile.config.getString("Owner_ID"))) {
 				
 				switch (e.getMessage().getContent()) {
 				
@@ -144,6 +144,7 @@ public class ChatEvent extends ListenerAdapter {
 				}
 				IRCMain.irc.close();
 				api.shutdown(true);
+				System.exit(0);
 			}
 			else {
 				e.getAuthor().getPrivateChannel().sendMessage("You are not authorized to do that!");

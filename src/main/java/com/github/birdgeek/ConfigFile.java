@@ -24,14 +24,15 @@ public class ConfigFile {
 	public static String getPassword() throws ConfigurationException {
 		return config.getString("Password");
 	}
-	public static BigInteger getHomeServer() {
-		return config.getBigInteger("Home_Server_ID");
+	public static BigInteger getHomeGuild() {
+		return config.getBigInteger("Home_Guild_ID");
 	}
 	public static BigInteger getHomeChannel() {
 		return config.getBigInteger("Home_Channel_ID");
 	}
 	
-	public static boolean getShouldEnable() {
+	public static boolean shouldEnableTwitch() {
 		return config.getBoolean("Twitch_Enable");
 	}
+
 }
