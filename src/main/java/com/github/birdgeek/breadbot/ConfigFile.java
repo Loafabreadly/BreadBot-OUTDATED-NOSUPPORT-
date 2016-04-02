@@ -8,7 +8,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class ConfigFile {
 	static String filename = "myConfig.cfg";
-	static PropertiesConfiguration config;
+	public static PropertiesConfiguration config;
 	
 	public ConfigFile () throws ConfigurationException {
 		ConfigFile.config = new PropertiesConfiguration(filename);
@@ -23,6 +23,10 @@ public class ConfigFile {
 	
 	public static String[] getApprovedIRCUsers() {
 		return config.getStringArray("Approved_IRC_Users");
+	}
+	
+	public static String[] getIgnoredIrcUsers() {
+		return config.getStringArray("Ignored_IRC_Users");
 	}
 	/*
 	 * Strings
@@ -66,6 +70,9 @@ public class ConfigFile {
 	}	
 	public static boolean shouldIrcRelay() {
 		return config.getBoolean("IRC_Relay");
+	}
+	public static void setIrcRelay(boolean value) {
+		config.setProperty("IRC_Relay", value);
 	}
 	
 	/*

@@ -11,6 +11,7 @@ import net.dv8tion.jda.utils.SimpleLog;
 import net.dv8tion.jda.utils.SimpleLog.Level;
 
 public class BotMain {
+	
 	static long start;
 	static ConfigFile config;
 	static StatsFile stats;
@@ -21,7 +22,7 @@ public class BotMain {
 	private static boolean shouldContinue;	
 	
 	/*
-	 * Main method  for all bots
+	 * Main method  for Breadbot
 	 */
 	public static void main(String[] args)  {
 		
@@ -32,15 +33,16 @@ public class BotMain {
 		try {
 			config = new ConfigFile();
 		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
-		systemLog.fatal(e.getMessage());
+			
+			systemLog.fatal(e.getMessage());
 		}
 		try {
 			stats = new StatsFile();
 		} catch (ConfigurationException e) {
-			// TODO Auto-generated catch block
+
 			systemLog.fatal(e.getMessage());
 		}
+		
 		start = System.currentTimeMillis();
 		version =  ConfigFile.getVersion();
 		
@@ -103,8 +105,5 @@ public static void goLive(){
 		IrcMain.kill();
 		System.exit(0);
 		scanner.close();
-	}
-
-		
-		
+	}	
 }
