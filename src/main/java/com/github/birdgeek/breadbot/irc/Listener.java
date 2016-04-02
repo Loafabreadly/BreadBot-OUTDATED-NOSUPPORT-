@@ -1,12 +1,15 @@
-package com.github.birdgeek;
+package com.github.birdgeek.breadbot.irc;
 
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
 
+import com.github.birdgeek.breadbot.BotMain;
+import com.github.birdgeek.breadbot.ConfigFile;
 
-public class IRCListener extends ListenerAdapter {
 
-	String[] ircCommands = {"help", "toggle", "h"};
+public class Listener extends ListenerAdapter {
+
+	String[] ircCommands = {"help", "toggle"};
 	/*
 	 * On IRC Message Received
 	 * @see org.pircbotx.hooks.ListenerAdapter#onMessage(org.pircbotx.hooks.events.MessageEvent)

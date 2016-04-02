@@ -1,4 +1,4 @@
-package com.github.birdgeek;
+package com.github.birdgeek.breadbot;
 
 
 import java.math.BigInteger;
@@ -45,6 +45,10 @@ public class ConfigFile {
 	
 	public static String getOAuth() {
 		return config.getString("Twitch_OAuth");
+	}
+	
+	public static String getTwitchLoginUser() {
+		return config.getString("Twitch_Login_User");
 	}
 	/*
 	 * Booleans

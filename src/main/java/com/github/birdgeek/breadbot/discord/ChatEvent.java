@@ -1,4 +1,4 @@
-package com.github.birdgeek;
+package com.github.birdgeek.breadbot.discord;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import org.apache.commons.configuration.ConfigurationException;
+
+import com.github.birdgeek.breadbot.BotMain;
+import com.github.birdgeek.breadbot.ConfigFile;
+import com.github.birdgeek.breadbot.StatsFile;
+import com.github.birdgeek.breadbot.irc.IrcMain;
 
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.MessageBuilder;
@@ -153,7 +158,7 @@ public class ChatEvent extends ListenerAdapter {
 				} catch (ConfigurationException e1) {
 					discordLog.warn(e1.getMessage());
 				}
-				IRCMain.irc.close();
+				IrcMain.irc.close();
 				jda.shutdown(true);
 				System.exit(0);
 			}

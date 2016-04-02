@@ -1,8 +1,10 @@
-package com.github.birdgeek;
+package com.github.birdgeek.breadbot;
 
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+
+import com.github.birdgeek.breadbot.discord.ChatEvent;
 
 import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Message;

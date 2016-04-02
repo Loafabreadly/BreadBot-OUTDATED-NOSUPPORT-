@@ -1,4 +1,7 @@
-package com.github.birdgeek;
+package com.github.birdgeek.breadbot.discord;
+
+import com.github.birdgeek.breadbot.BotMain;
+import com.github.birdgeek.breadbot.ConfigFile;
 
 import net.dv8tion.jda.events.Event;
 import net.dv8tion.jda.events.InviteReceivedEvent;
