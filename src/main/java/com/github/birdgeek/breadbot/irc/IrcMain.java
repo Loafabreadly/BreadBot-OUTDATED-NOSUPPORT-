@@ -80,4 +80,9 @@ public class IrcMain {
 		System.exit(2);
 	}
 
+	public static void sendMessage(String contents) {
+		irc.getUserBot().send().message(contents); //TODO Test this function out - not sure it will send to channel
+		
+	}
+
 }

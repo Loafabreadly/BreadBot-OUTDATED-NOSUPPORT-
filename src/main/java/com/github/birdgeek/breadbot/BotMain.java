@@ -98,13 +98,17 @@ public static void goLive(){
 				discordLog.debug("commanded to print diagnostics");
 				DiscordMain.printDiagnostics();
 				break;
-
+				
+			case 't':
+				ircLog.debug("Commanded to chat");
+				IrcMain.sendMessage(contents);
+			
 			}
 		}
 		
-		DiscordMain.jda.shutdown();
-		IrcMain.kill();
-		System.exit(0);
+		//DiscordMain.jda.shutdown();
+		//IrcMain.kill();
 		scanner.close();
+		System.exit(0);
 	}	
 }
