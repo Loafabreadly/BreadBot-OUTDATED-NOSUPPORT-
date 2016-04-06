@@ -11,8 +11,9 @@ import com.github.birdgeek.breadbot.ConfigFile;
 import net.dv8tion.jda.utils.SimpleLog;
 
 public class IrcMain {
-	static PircBotX irc;
+	public static PircBotX irc;
 	static SimpleLog ircLog;
+	public static boolean isRunning;
 	
 	
 	/*
@@ -32,8 +33,10 @@ public class IrcMain {
 		irc = new PircBotX(config);
 		try {
 			irc.startBot();
+			isRunning = true;
 		} catch (IOException | IrcException e) {
 			ircLog.fatal(e.getMessage());
+			isRunning = false;
 			
 		}
 	}

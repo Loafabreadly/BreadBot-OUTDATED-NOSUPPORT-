@@ -1,6 +1,5 @@
 package com.github.birdgeek.breadbot.discord;
 
-import com.github.birdgeek.breadbot.BotMain;
 import com.github.birdgeek.breadbot.ConfigFile;
 
 import net.dv8tion.jda.events.Event;
@@ -9,16 +8,11 @@ import net.dv8tion.jda.hooks.ListenerAdapter;
 import net.dv8tion.jda.utils.InviteUtil;
 
 public class InviteEvent extends ListenerAdapter {
-	
-<<<<<<< HEAD
-	public void onInviteReceived(InviteReceivedEvent event) {
-		if (isApprovedUser(event.getAuthor().getUsername())) {
-			InviteUtil.join(event.getInvite(), BotMain.jda, null);
-=======
+
 	public void onInviteReceived(InviteReceivedEvent event) { //TODO Test this out
 		if (isApprovedUser(event.getAuthor().getUsername())) {
-			InviteUtil.join(event.getInvite(), BotMain.jda, null); //ERROR May error out on Consumable
->>>>>>> 83ccf321d3a72923b2cc63704369724a738d8c88
+			InviteUtil.join(event.getInvite(), DiscordMain.jda, null); //ERROR May error out on Consumable
+
 		}
 		
 	}

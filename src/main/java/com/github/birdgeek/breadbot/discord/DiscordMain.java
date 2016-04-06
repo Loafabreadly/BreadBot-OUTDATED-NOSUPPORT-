@@ -70,7 +70,7 @@ public class DiscordMain {
 		
 	}
 
-		public public static void sendMessage(Message message) {
+		public static void sendMessage(Message message) {
 			jda.getTextChannelById("" +ConfigFile.getHomeChannel()).sendMessage(message);
 		}
 

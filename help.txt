@@ -1,21 +1,22 @@
 ----------------------------------------
-#help - The command that got you here!
-#globalhelp - Sends the same help message but in the channel (Locked for certain users)
-#flip - Will pick either heads or tails for you!
-#uptime - Tells the amount of time the bot has been online for
-#current - Tells the current time in nano time
-#dev - Talks about the current dev team and links to the github
-#pong - Ping!
-#disconnect - Turns off the bot (Locked for certain users)
-#kill - Force quits the bot (and the program)
-#reload - Will reload the config.cfg file
-#debug - Outputs a bunch of stuff only useful to me
+#help - 'The command that got you here!'
+#globalhelp - 'Sends the same help message but in the channel (Locked for certain users)'
+#flip - 'Will pick either heads or tails for you!'
+#uptime - 'Tells the amount of time the bot has been online for'
+#current - 'Tells the current time in nano time'
+#dev - 'Talks about the current dev team and links to the github'
+#pong - 'Ping!'
+#disconnect - 'Turns off the bot (Locked for certain users)'
+#kill - 'Force quits the bot (and the program)'
+#reload - 'Will reload the config.cfg file'
+#debug - 'Outputs a bunch of stuff only useful to me'
+#attach - '(Owner Only) Will change the home channel to the current text channel'
 
 Some Commands can be done only through private Messages:
-#config - Used to edit or read the values of the config
+#config - 'Used to edit or read the values of the config'
 	-edit
 		-'toggleirc'
 		-'+user'
 	-relayValue:[key]
-#stats - reads out all Stats for all commands
+#stats - 'reads out all Stats for all commands'
 ----------------------------------------

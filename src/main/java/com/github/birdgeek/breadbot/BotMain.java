@@ -12,7 +12,7 @@ import net.dv8tion.jda.utils.SimpleLog.Level;
 
 public class BotMain {
 	
-	static long start;
+	public static long start;
 	static ConfigFile config;
 	static StatsFile stats;
 	static String version;
@@ -51,6 +51,7 @@ public class BotMain {
 		systemLog.setLevel(Level.DEBUG);//TODO For releases; set this to a different lvl
 		try {
 			discordLog.debug("Logging in using: " + ConfigFile.getEmail());
+			DiscordMain.setup(discordLog);
 		} catch (ConfigurationException e) {
 			
 			systemLog.fatal(e.getMessage());
