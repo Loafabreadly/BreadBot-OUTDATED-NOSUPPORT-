@@ -3,6 +3,7 @@ package com.github.birdgeek.breadbot;
 import java.util.Scanner;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.slf4j.LoggerFactory;
 
 import com.github.birdgeek.breadbot.discord.DiscordMain;
 import com.github.birdgeek.breadbot.irc.IrcMain;
@@ -11,8 +12,7 @@ import com.github.birdgeek.breadbot.utility.DiscordUtility;
 import com.github.birdgeek.breadbot.utility.IrcUtility;
 import com.github.birdgeek.breadbot.utility.StatsFile;
 
-import net.dv8tion.jda.utils.SimpleLog;
-import net.dv8tion.jda.utils.SimpleLog.Level;
+import org.slf4j.Logger;
 
 public class BotMain {
 	
@@ -20,9 +20,10 @@ public class BotMain {
 	static ConfigFile config;
 	static StatsFile stats;
 	static String version;
-	static SimpleLog discordLog;
-	static SimpleLog ircLog;
-	static SimpleLog systemLog;
+	public static Logger discordLog;
+	public static Logger ircLog;
+	public static Logger systemLog;
+
 	private static boolean shouldContinue;	
 	
 	/*
@@ -30,9 +31,10 @@ public class BotMain {
 	 */
 	public static void main(String[] args)  {
 		
-		discordLog = SimpleLog.getLog("Discord");
-		ircLog = SimpleLog.getLog("IRC");
-		systemLog = SimpleLog.getLog("System");
+		discordLog = LoggerFactory.getLogger("Discord");
+		ircLog = LoggerFactory.getLogger("IRC");
+		systemLog = LoggerFactory.getLogger("System");
+	
 		
 		config = new ConfigFile();
 		stats = new StatsFile();
@@ -40,23 +42,21 @@ public class BotMain {
 		start = System.currentTimeMillis();
 		version =  ConfigFile.getVersion();
 		
-		discordLog.setLevel(Level.DEBUG);
-		ircLog.setLevel(Level.DEBUG);
-		systemLog.setLevel(Level.DEBUG);//TODO For releases; set this to a different lvl
-		
+
 		try {
 			discordLog.debug("Logging in using: " + ConfigFile.getEmail());
 			DiscordMain.setup(discordLog);
 		} catch (ConfigurationException e) {
 			
-			systemLog.fatal(e.getMessage());
+			systemLog.error(e.getMessage());
 		}
-		
 		
 		
 		if (ConfigFile.shouldEnableTwitch()) { //Should we enable the IRC portion?
-				IrcMain.setup(ircLog);
-		}
+			IrcMain.setup(ircLog);
+			systemLog.trace("Enabled twitch");
+	}
+		
 		
 		new DiscordUtility(DiscordMain.jda, discordLog); //Setup for Util class - passes JDA and Logger
 		goLive();
@@ -96,8 +96,10 @@ public class BotMain {
 				break;
 				
 			case 't':
+				if (ConfigFile.shouldEnableTwitch()) {
 				ircLog.debug("Commanded to chat");
 				IrcUtility.sendMessage(contents);
+				}
 				break;
 			}
 		}

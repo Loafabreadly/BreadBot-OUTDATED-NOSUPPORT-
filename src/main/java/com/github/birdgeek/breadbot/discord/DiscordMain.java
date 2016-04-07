@@ -3,20 +3,20 @@ package com.github.birdgeek.breadbot.discord;
 import javax.security.auth.login.LoginException;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.utility.ConfigFile;
 
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
 import net.dv8tion.jda.MessageBuilder;
-import net.dv8tion.jda.utils.SimpleLog;
 
 public class DiscordMain {
 	
 	public static JDA jda;
-	static SimpleLog discordLog;
+	static Logger discordLog;
 	
-	public static void setup(SimpleLog log) {
+	public static void setup(Logger log) {
 		discordLog = log;
 	
 		try {
@@ -27,7 +27,7 @@ public class DiscordMain {
 				.addListener(new PmEvent(discordLog)) //Passes Logger
 				.buildBlocking();
 		} catch (LoginException | IllegalArgumentException | ConfigurationException | InterruptedException e) {
-		discordLog.fatal(e.getMessage());
+		discordLog.error(e.getMessage());
 		} //Builds the discord bot - Blocks everything until API is ready
 	
 		jda.getAccountManager().setGame("Breadbot V: " + ConfigFile.getVersion());

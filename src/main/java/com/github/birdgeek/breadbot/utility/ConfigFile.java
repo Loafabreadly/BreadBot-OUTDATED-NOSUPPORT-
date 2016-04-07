@@ -1,8 +1,6 @@
 package com.github.birdgeek.breadbot.utility;
 
 
-import java.math.BigInteger;
-
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 

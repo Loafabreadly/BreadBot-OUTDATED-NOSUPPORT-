@@ -2,6 +2,7 @@ package com.github.birdgeek.breadbot.discord;
 
 import java.util.Random;
 import org.apache.commons.configuration.ConfigurationException;
+import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.BotMain;
 import com.github.birdgeek.breadbot.utility.ConfigFile;
@@ -11,7 +12,6 @@ import com.github.birdgeek.breadbot.utility.StatsFile;
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
-import net.dv8tion.jda.utils.SimpleLog;
 
 public class ChatEvent extends ListenerAdapter {
 
@@ -20,7 +20,7 @@ public class ChatEvent extends ListenerAdapter {
 	Random random = new Random();
 	long start = BotMain.start;
 	String[] approvedUsers = DiscordUtility.getApprovedUsers();
-	SimpleLog discordLog;
+	Logger discordLog;
 	
 	
 	public static String[] availableCommands = {
@@ -29,7 +29,7 @@ public class ChatEvent extends ListenerAdapter {
 			, "reload", "config", "attach", "getChannel"
 			};
 	
-	public ChatEvent(JDA jda, SimpleLog discordLog) {
+	public ChatEvent(JDA jda, Logger discordLog) {
 		this.jda = jda;
 		this.discordLog = discordLog;
 	}

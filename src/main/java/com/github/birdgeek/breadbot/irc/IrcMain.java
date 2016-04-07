@@ -6,14 +6,14 @@ import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
 import org.pircbotx.output.OutputIRC;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.github.birdgeek.breadbot.utility.ConfigFile;
 
-import net.dv8tion.jda.utils.SimpleLog;
-
 public class IrcMain {
 	public static PircBotX irc;
-	static SimpleLog ircLog;
+	static Logger ircLog;
 	public static boolean isRunning;
 	static OutputIRC output;
 	
@@ -21,7 +21,7 @@ public class IrcMain {
 	/*
 	 * Main method for creation of IRC Bot
 	 */
-	public static void setup(SimpleLog log) {
+	public static void setup(Logger log) {
 		ircLog = log;
 		
 		Configuration config = new Configuration.Builder()
@@ -38,7 +38,7 @@ public class IrcMain {
 			output = new OutputIRC(irc);
 			isRunning = true;
 		} catch (IOException | IrcException e) {
-			ircLog.fatal(e.getMessage());
+			ircLog.error(e.getMessage());
 			isRunning = false;
 			
 		}
@@ -49,7 +49,7 @@ public class IrcMain {
 	 */
 	public static void main(String[] args) {
 		
-		ircLog = SimpleLog.getLog("IRC");
+		ircLog = LoggerFactory.getLogger("IRC");
 		Configuration config = new Configuration.Builder()
 				.setName(ConfigFile.getTwitchLoginUser())
 				.addServer("irc.twitch.tv", 6667)
@@ -64,7 +64,7 @@ public class IrcMain {
 			irc.startBot();
 			output = new OutputIRC(irc);
 		} catch (IOException | IrcException e) {
-			ircLog.fatal(e.getMessage());
+			ircLog.error(e.getMessage());
 		}
 		
 	}

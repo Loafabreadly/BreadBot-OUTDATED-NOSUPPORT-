@@ -3,18 +3,20 @@ package com.github.birdgeek.breadbot.discord;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.slf4j.Logger;
+
 import com.github.birdgeek.breadbot.utility.ConfigFile;
 import com.github.birdgeek.breadbot.utility.DiscordUtility;
 import com.github.birdgeek.breadbot.utility.StatsFile;
 
 import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
-import net.dv8tion.jda.utils.SimpleLog;
+import net.dv8tion.jda.hooks.ListenerAdapter;
 
-public class PmEvent {
+public class PmEvent extends ListenerAdapter {
 	
-	SimpleLog discordLog;
+	Logger discordLog;
 
-	public PmEvent(SimpleLog log) {
+	public PmEvent(Logger log) {
 		this.discordLog = log;
 	}
 	

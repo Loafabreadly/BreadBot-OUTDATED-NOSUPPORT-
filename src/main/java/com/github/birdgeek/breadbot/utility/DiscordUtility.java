@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import org.slf4j.Logger;
+
 import com.github.birdgeek.breadbot.BotMain;
 
 import net.dv8tion.jda.JDA;
@@ -12,15 +14,14 @@ import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.PrivateChannel;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.utils.SimpleLog;
 
 public class DiscordUtility {
 	static JDA jda;
-	static SimpleLog discordLog;
+	static Logger discordLog;
 	private static String helpFileName ="help.txt";
 	static String[] approvedUsers = getApprovedUsers();
 	
-	public DiscordUtility(JDA api, SimpleLog log) {
+	public DiscordUtility(JDA api, Logger log) {
 		DiscordUtility.jda = api;
 		DiscordUtility.discordLog = log;
 	}
