@@ -6,6 +6,10 @@ import org.apache.commons.configuration.ConfigurationException;
 
 import com.github.birdgeek.breadbot.discord.DiscordMain;
 import com.github.birdgeek.breadbot.irc.IrcMain;
+import com.github.birdgeek.breadbot.utility.ConfigFile;
+import com.github.birdgeek.breadbot.utility.DiscordUtility;
+import com.github.birdgeek.breadbot.utility.IrcUtility;
+import com.github.birdgeek.breadbot.utility.StatsFile;
 
 import net.dv8tion.jda.utils.SimpleLog;
 import net.dv8tion.jda.utils.SimpleLog.Level;
@@ -30,18 +34,8 @@ public class BotMain {
 		ircLog = SimpleLog.getLog("IRC");
 		systemLog = SimpleLog.getLog("System");
 		
-		try {
-			config = new ConfigFile();
-		} catch (ConfigurationException e) {
-			
-			systemLog.fatal(e.getMessage());
-		}
-		try {
-			stats = new StatsFile();
-		} catch (ConfigurationException e) {
-
-			systemLog.fatal(e.getMessage());
-		}
+		config = new ConfigFile();
+		stats = new StatsFile();
 		
 		start = System.currentTimeMillis();
 		version =  ConfigFile.getVersion();
@@ -49,6 +43,7 @@ public class BotMain {
 		discordLog.setLevel(Level.DEBUG);
 		ircLog.setLevel(Level.DEBUG);
 		systemLog.setLevel(Level.DEBUG);//TODO For releases; set this to a different lvl
+		
 		try {
 			discordLog.debug("Logging in using: " + ConfigFile.getEmail());
 			DiscordMain.setup(discordLog);
@@ -63,10 +58,11 @@ public class BotMain {
 				IrcMain.setup(ircLog);
 		}
 		
+		new DiscordUtility(DiscordMain.jda, discordLog); //Setup for Util class - passes JDA and Logger
 		goLive();
 	}
 
-public static void goLive(){
+	public static void goLive(){
 		
 		shouldContinue = true;
 		
@@ -82,27 +78,27 @@ public static void goLive(){
 			
 			case 'k':
 				
-				discordLog.debug("commanded to kill");
-				DiscordMain.sendMessage("Quiting from Console");
+				discordLog.debug("Commanded to kill");
+				DiscordUtility.sendMessage("Quiting from Console");
 				shouldContinue = false;
 				break;
 				
 			case 'c':
 				
-				discordLog.debug("commanded to chat");
-				DiscordMain.sendMessage("[console] " + contents);
+				discordLog.debug("Commanded to chat");
+				DiscordUtility.sendMessage("[console] " + contents);
 				break;
 				
 			case 'd':
 				
-				discordLog.debug("commanded to print diagnostics");
-				DiscordMain.printDiagnostics();
+				discordLog.debug("Commanded to print diagnostics");
+				DiscordUtility.printDiagnostics();
 				break;
 				
 			case 't':
 				ircLog.debug("Commanded to chat");
-				IrcMain.sendMessage(contents);
-			
+				IrcUtility.sendMessage(contents);
+				break;
 			}
 		}
 		

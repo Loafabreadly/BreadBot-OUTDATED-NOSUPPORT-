@@ -1,4 +1,4 @@
-package com.github.birdgeek.breadbot;
+package com.github.birdgeek.breadbot.utility;
 
 
 import java.math.BigInteger;
@@ -6,12 +6,18 @@ import java.math.BigInteger;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
+import com.github.birdgeek.breadbot.BotMain;
+
 public class ConfigFile {
-	static String filename = "myConfig.cfg";
+	static String filename = "myConfig.cfg"; //TODO Set this different for releases
 	public static PropertiesConfiguration config;
 	
-	public ConfigFile () throws ConfigurationException {
-		ConfigFile.config = new PropertiesConfiguration(filename);
+	public ConfigFile ()  {
+		try {
+			ConfigFile.config = new PropertiesConfiguration(filename);
+		} catch (ConfigurationException e) {
+			BotMain.systemLog.warn(e.getMessage());
+		}
 	}
 	
 	/*
@@ -78,16 +84,20 @@ public class ConfigFile {
 	/*
 	 * Ints
 	 */
-	public static BigInteger getHomeGuild() {
-		return config.getBigInteger("Home_Guild_ID");
+	public static String getHomeGuild() {
+		return config.getBigInteger("Home_Guild_ID").toString();
 	}
 	
-	public static BigInteger getHomeChannel() {
-		return config.getBigInteger("Home_Channel_ID");
+	public static String getHomeChannel() {
+		return config.getBigInteger("Home_Channel_ID").toString();
 	}	
 	
-	public static BigInteger getOwnerID() {
-		return config.getBigInteger("Owner_ID");
+	public static String getOwnerID() {
+		return config.getBigInteger("Owner_ID").toString();
+	}
+	
+	public static String getTwitchDiscordChannelID() {
+		return config.getBigInteger("Twitch_Discord_Channel_ID").toString();
 	}
 
 }

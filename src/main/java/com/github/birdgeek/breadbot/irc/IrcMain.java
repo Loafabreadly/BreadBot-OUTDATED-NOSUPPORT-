@@ -5,8 +5,9 @@ import java.io.IOException;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
+import org.pircbotx.output.OutputIRC;
 
-import com.github.birdgeek.breadbot.ConfigFile;
+import com.github.birdgeek.breadbot.utility.ConfigFile;
 
 import net.dv8tion.jda.utils.SimpleLog;
 
@@ -14,6 +15,7 @@ public class IrcMain {
 	public static PircBotX irc;
 	static SimpleLog ircLog;
 	public static boolean isRunning;
+	static OutputIRC output;
 	
 	
 	/*
@@ -27,12 +29,13 @@ public class IrcMain {
 				.addServer("irc.twitch.tv", 6667)
 				.setServerPassword(ConfigFile.getOAuth())
 				.addAutoJoinChannel("#" + ConfigFile.getTwitchChannel())
-				.addListener(new Listener())
+				.addListener(new ChatListener())
 				.buildConfiguration();
 				
 		irc = new PircBotX(config);
 		try {
 			irc.startBot();
+			output = new OutputIRC(irc);
 			isRunning = true;
 		} catch (IOException | IrcException e) {
 			ircLog.fatal(e.getMessage());
@@ -52,13 +55,14 @@ public class IrcMain {
 				.addServer("irc.twitch.tv", 6667)
 				.setServerPassword(ConfigFile.getOAuth())
 				.addAutoJoinChannel("#" + ConfigFile.getTwitchChannel())
-				.addListener(new Listener())
+				.addListener(new ChatListener())
 				.buildConfiguration();
 				
 		irc = new PircBotX(config);
 		try {
 			
 			irc.startBot();
+			output = new OutputIRC(irc);
 		} catch (IOException | IrcException e) {
 			ircLog.fatal(e.getMessage());
 		}
@@ -71,18 +75,13 @@ public class IrcMain {
 	
 	public static void kill() {
 		ircLog.trace("Trying to close IRC connection");
-		irc.close();
+		output.quitServer();
 		
 		if (!irc.isConnected()) 
 			ircLog.trace("Succesfully closed IRC connection");
 		else 
 			ircLog.warn("Didn't close out - force shutting down program");
 		System.exit(2);
-	}
-
-	public static void sendMessage(String contents) {
-		irc.getUserBot().send().message(contents); //TODO Test this function out - not sure it will send to channel
-		
 	}
 
 }
