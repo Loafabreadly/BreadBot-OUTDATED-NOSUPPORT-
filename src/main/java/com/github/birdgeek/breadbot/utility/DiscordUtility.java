@@ -14,6 +14,7 @@ import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.PrivateChannel;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.events.message.guild.GuildMessageReceivedEvent;
 
 public class DiscordUtility {
 	static JDA jda;
@@ -26,7 +27,7 @@ public class DiscordUtility {
 		DiscordUtility.discordLog = log;
 	}
 	
-	public static String getUsernameID(MessageReceivedEvent e) {
+	public static String getUsernameID(GuildMessageReceivedEvent e) {
 		return e.getAuthor().getId();
 	}
 
@@ -38,7 +39,7 @@ public class DiscordUtility {
 	}
 
 	//TODO: Comment all these functions below
-	public static void delMessage(MessageReceivedEvent e) {
+	public static void delMessage(GuildMessageReceivedEvent e) {
 
 		if (ConfigFile.shouldDelete()) {
 			
@@ -46,21 +47,21 @@ public class DiscordUtility {
 		}
 	}
 
-	public static void sendGlobalHelp(MessageReceivedEvent e) {
-		e.getTextChannel().sendMessage(new MessageBuilder()
+	public static void sendGlobalHelp(GuildMessageReceivedEvent e) {
+		e.getChannel().sendMessage(new MessageBuilder()
 				.appendString("Welcome to the help command! Below are all the commands you can run!")
 				.appendCodeBlock(getHelpCommands(), "python")
 				.build());
 		
 	}
 
-	public static void sendHelp(MessageReceivedEvent e) {
+	public static void sendHelp(GuildMessageReceivedEvent e) {
 		if (!e.getAuthor().getUsername().equalsIgnoreCase(jda.getSelfInfo().getUsername())) {
 			e.getAuthor().getPrivateChannel().sendMessage("Welcome to the help command! Below are all the commands you can run!");
 			e.getAuthor().getPrivateChannel().sendMessage(new MessageBuilder().appendCodeBlock(getHelpCommands(), "python").build());
 		}
 		else {
-			e.getTextChannel().sendMessage("Cannot send help to yourself in PM; try #global help");
+			e.getChannel().sendMessage("Cannot send help to yourself in PM; try #global help");
 		}
 	}
 	
@@ -69,7 +70,7 @@ public class DiscordUtility {
 	}
 	
 
-	public static void sendUptime(MessageReceivedEvent e) {
+	public static void sendUptime(GuildMessageReceivedEvent e) {
 		long different = System.currentTimeMillis() - BotMain.start;
 		long secondsInMilli = 1000;
 		long minutesInMilli = secondsInMilli * 60;
@@ -90,7 +91,7 @@ public class DiscordUtility {
 		    elapsedDays,
 		    elapsedHours, elapsedMinutes, elapsedSeconds);
 		
-		e.getTextChannel().sendMessage( "I have been online for " + time);	
+		e.getChannel().sendMessage( "I have been online for " + time);	
 		}
 
 	private static String getHelpCommands() {
@@ -125,7 +126,7 @@ public class DiscordUtility {
 		return ConfigFile.getApprovedUsers();
 		
 	}
-	public static String getUsername(MessageReceivedEvent e) {
+	public static String getUsername(GuildMessageReceivedEvent e) {
 		return e.getAuthor().getUsername();
 	}
 	
@@ -139,14 +140,22 @@ public class DiscordUtility {
 	}
 	
 	public static void printDiagnostics() {
-		
+		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage("test");
+		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage(
+				new MessageBuilder().appendCodeBlock(""
+				+ "Home Channel: " + ConfigFile.getHomeChannel() + "/" + jda.getTextChannelById(ConfigFile.getHomeChannel()).getName()
+				+ "\nHome Guild:" + ConfigFile.getHomeGuild() + "/" + jda.getGuildById(ConfigFile.getHomeGuild()).getName()
+				+ "\nOwner: " + ConfigFile.getOwnerID() + "/" + jda.getUserById(ConfigFile.getOwnerID())
+				, "python")
+				.build());
+		/*
 		sendMessage(new MessageBuilder().appendCodeBlock(""
 				+ "Home Channel: " + ConfigFile.getHomeChannel() + "/" + jda.getTextChannelById(ConfigFile.getHomeChannel()).getName()
 				+ "\nHome Guild:" + ConfigFile.getHomeGuild() + "/" + jda.getGuildById(ConfigFile.getHomeGuild()).getName()
-				+ "\nOwner: " + ConfigFile.getOwnerID()
+				+ "\nOwner: " + ConfigFile.getOwnerID() + "/" + jda.getUserById(ConfigFile.getOwnerID())
 				, "python")
 				.build());
-		
+		*/
 		}
 	public static void sendMessage(String contents) {
 		jda.getTextChannelById("" +ConfigFile.getHomeChannel()).sendMessage(contents);

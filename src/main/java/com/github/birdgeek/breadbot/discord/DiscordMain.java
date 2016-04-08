@@ -6,6 +6,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.utility.ConfigFile;
+import com.github.birdgeek.breadbot.utility.DiscordUtility;
 
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.JDABuilder;
@@ -22,7 +23,7 @@ public class DiscordMain {
 		try {
 			jda = new JDABuilder(ConfigFile.getEmail(), ConfigFile.getPassword())
 				.addListener(new ChatEvent(jda, discordLog)) //Pass API and Specific Logger
-				.addListener(new InviteEvent()) //TODO Test invite Util
+				.addListener(new InviteEvent()) 
 				.addListener(new DiscordToTwitchEvent())
 				.addListener(new PmEvent(discordLog)) //Passes Logger
 				.buildBlocking();
@@ -31,6 +32,7 @@ public class DiscordMain {
 		} //Builds the discord bot - Blocks everything until API is ready
 	
 		jda.getAccountManager().setGame("Breadbot V: " + ConfigFile.getVersion());
+		new DiscordUtility(DiscordMain.jda, discordLog); //Setup for Util class - passes JDA and Logger		
 		sendWelcome();
 	}
 	

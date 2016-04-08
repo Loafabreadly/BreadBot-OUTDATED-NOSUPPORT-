@@ -8,17 +8,17 @@
     </encoder>
   </appender>
   
-	<logger name="Discord" level="OFF" additivity="false">
+	<logger name="Discord" level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>
-	<logger name="IRC" level="OFF" additivity="false">
+	<logger name="IRC" level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>	
-	<logger name="System" level="OFF" additivity="false">
+	<logger name="System" level="INFO" additivity="false">
 		<appender-ref ref="STDOUT" />
 	</logger>	
 
-  <root level="OFF">
+  <root level="INFO">
     <appender-ref ref="STDOUT" />
   </root>
 </configuration>

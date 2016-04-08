@@ -9,7 +9,6 @@ import com.github.birdgeek.breadbot.discord.DiscordMain;
 import com.github.birdgeek.breadbot.irc.IrcMain;
 import com.github.birdgeek.breadbot.utility.ConfigFile;
 import com.github.birdgeek.breadbot.utility.DiscordUtility;
-import com.github.birdgeek.breadbot.utility.IrcUtility;
 import com.github.birdgeek.breadbot.utility.StatsFile;
 
 import org.slf4j.Logger;
@@ -44,7 +43,7 @@ public class BotMain {
 		
 
 		try {
-			discordLog.debug("Logging in using: " + ConfigFile.getEmail());
+			discordLog.info("Logging in using: " + ConfigFile.getEmail());
 			DiscordMain.setup(discordLog);
 		} catch (ConfigurationException e) {
 			
@@ -58,8 +57,8 @@ public class BotMain {
 	}
 		
 		
-		new DiscordUtility(DiscordMain.jda, discordLog); //Setup for Util class - passes JDA and Logger
-		goLive();
+		
+		//goLive();
 	}
 
 	public static void goLive(){
@@ -98,7 +97,7 @@ public class BotMain {
 			case 't':
 				if (ConfigFile.shouldEnableTwitch()) {
 				ircLog.debug("Commanded to chat");
-				IrcUtility.sendMessage(contents);
+				IrcMain.sendMessage(contents);
 				}
 				break;
 			}

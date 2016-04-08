@@ -11,6 +11,7 @@ import com.github.birdgeek.breadbot.utility.StatsFile;
 
 import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 
 public class ChatEvent extends ListenerAdapter {
@@ -26,7 +27,7 @@ public class ChatEvent extends ListenerAdapter {
 	public static String[] availableCommands = {
 			"help", "globalhelp", "dev", "ping", "stats", 
 			"disconnect", "kill", "flip", "uptime", "currenttime"
-			, "reload", "config", "attach", "getChannel"
+			, "reload", "config", "attach", "getChannel", "getServer"
 			};
 	
 	public ChatEvent(JDA jda, Logger discordLog) {
@@ -38,14 +39,14 @@ public class ChatEvent extends ListenerAdapter {
 	 * On Discord Message Received
 	 * @see net.dv8tion.jda.hooks.ListenerAdapter#onMessageReceived(net.dv8tion.jda.events.message.MessageReceivedEvent)
 	 */
-	public void onMessageReceived(MessageReceivedEvent e) {
+	public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
 		String username = DiscordUtility.getUsername(e);
 					
 		switch (e.getMessage().getContent()) {
 		
 		case "#ping":
 			DiscordUtility.delMessage(e);
-			e.getTextChannel().sendMessage("PONG");
+			e.getChannel().sendMessage("PONG");
 			StatsFile.updateCount("ping");
 			break;
 		
@@ -89,13 +90,13 @@ public class ChatEvent extends ListenerAdapter {
 			DiscordUtility.delMessage(e);
 			StatsFile.updateCount("flip");			
 			 if (choice == true) {
-				 e.getTextChannel().sendMessage("Heads!");
+				 e.getChannel().sendMessage("Heads!");
 			 }
 			 else if (choice == false) {
-				 e.getTextChannel().sendMessage("Tails!");
+				 e.getChannel().sendMessage("Tails!");
 			 }
 			 else {
-				 e.getTextChannel().sendMessage( "You don fucked up");
+				 e.getChannel().sendMessage( "You don fucked up");
 			 }			
 			break;
 			
@@ -121,7 +122,7 @@ public class ChatEvent extends ListenerAdapter {
 			if (DiscordUtility.isApprovedUser(username)) {
 				DiscordUtility.delMessage(e);
 				StatsFile.updateCount("currenttime");				
-				e.getTextChannel().sendMessage("" + System.nanoTime());
+				e.getChannel().sendMessage("" + System.nanoTime());
 			}
 			else {
 				e.getAuthor().getPrivateChannel().sendMessage("You are not authorized to do that!");
@@ -131,7 +132,7 @@ public class ChatEvent extends ListenerAdapter {
 		case "#dev":
 			DiscordUtility.delMessage(e);
 			StatsFile.updateCount("dev");			
-			e.getTextChannel().sendMessage("BreadBot is developed by LoafaBread and all the code can be found at http://birdgeek.github.io/BreadBot/");			
+			e.getChannel().sendMessage("BreadBot is developed by LoafaBread and all the code can be found at http://birdgeek.github.io/BreadBot/");			
 			break;
 			
 		case "#reload":
@@ -157,25 +158,28 @@ public class ChatEvent extends ListenerAdapter {
 			break;
 		
 		case "#getChannel":
-				e.getAuthor().getPrivateChannel().sendMessage("ID For : '" + e.getTextChannel().getName() + "' is: " + e.getTextChannel().getId());
+				e.getAuthor().getPrivateChannel().sendMessage("ID For : '" + e.getChannel().getName() + "' is: " + e.getChannel().getId());
+			break;
+		case "#getServer":
+			e.getAuthor().getPrivateChannel().sendMessage("ID For : " + e.getGuild().getName() + " is :" + e.getGuild().getId());
 			break;
 		
 		case "#attach":
 			if (DiscordUtility.isOwner(DiscordUtility.getUsernameID(e))) {
 				e.getChannel().sendMessage("Trying to switch the home channel");
-				if (ConfigFile.getHomeChannel().toString().equalsIgnoreCase(e.getTextChannel().getId())) {
-					e.getTextChannel().sendMessage("**This is already the home channel!**");
+				if (ConfigFile.getHomeChannel().toString().equalsIgnoreCase(e.getChannel().getId())) {
+					e.getChannel().sendMessage("**This is already the home channel!**");
 				}
 				else {
-					ConfigFile.config.setProperty("Home_Channel_ID",  e.getTextChannel().getId());
-					if (ConfigFile.getHomeChannel().toString().equalsIgnoreCase(e.getTextChannel().getId())) {
-					e.getChannel().sendMessage("Success! Home channel is now: " + e.getTextChannel().getName());
-					discordLog.trace("The owner changed the home channel to: " + e.getTextChannel().getName());
+					ConfigFile.config.setProperty("Home_Channel_ID",  e.getChannel().getId());
+					if (ConfigFile.getHomeChannel().toString().equalsIgnoreCase(e.getChannel().getId())) {
+					e.getChannel().sendMessage("Success! Home channel is now: " + e.getChannel().getName());
+					discordLog.trace("The owner changed the home channel to: " + e.getChannel().getName());
 					}
 					else {
 					e.getChannel().sendMessage("Failed the check, try setting it manually in the .cfg");
-					discordLog.warn("Changing the home channel failed! Tried to change it to: (" + e.getTextChannel().getId() + "/" 
-							+ e.getTextChannel().getName()
+					discordLog.warn("Changing the home channel failed! Tried to change it to: (" + e.getChannel().getId() + "/" 
+							+ e.getChannel().getName()
 							+ ") and current is: (" + ConfigFile.getHomeChannel() + "/" 
 							+ jda.getTextChannelById("" + ConfigFile.getHomeChannel()).getName() + ")");
 					}

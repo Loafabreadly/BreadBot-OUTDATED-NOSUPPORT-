@@ -42,6 +42,7 @@ public class IrcMain {
 			isRunning = false;
 			
 		}
+
 	}
 	
 	/*
@@ -67,7 +68,8 @@ public class IrcMain {
 			ircLog.error(e.getMessage());
 		}
 		
-	}
+			irc.send().message("#" + ConfigFile.getTwitchChannel(), "I live");
+		}
 
 	public static boolean shouldEnable() {
 		return ConfigFile.shouldEnableTwitch();
@@ -82,6 +84,11 @@ public class IrcMain {
 		else 
 			ircLog.warn("Didn't close out - force shutting down program");
 		System.exit(2);
+	}
+	
+	public static void sendMessage(String contents) {
+
+		irc.sendRaw().rawLine("PRIVMSG #" + ConfigFile.getTwitchChannel() +" :" + contents);
 	}
 
 }

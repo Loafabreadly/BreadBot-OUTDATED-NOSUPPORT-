@@ -1,19 +1,15 @@
 package com.github.birdgeek.breadbot.utility;
 
-import org.pircbotx.PircBotX;
+import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.MessageEvent;
-import org.pircbotx.output.OutputIRC;
 
-public class IrcUtility {
-	static PircBotX irc;
-	static OutputIRC output;
+public class IrcUtility extends ListenerAdapter  {
+	
 	static String targetChannel;
 	
 	static String[] ircCommands = {"help", "toggle"};
 	
-	public IrcUtility(PircBotX irc, OutputIRC output) {
-		IrcUtility.irc = irc;
-		IrcUtility.output = output;
+	public IrcUtility() {
 		targetChannel = "#" + ConfigFile.getTwitchChannel();
 	}
 
@@ -61,11 +57,5 @@ public class IrcUtility {
 		}
 			return false;
 	}	
-
-	public static void sendMessage(String contents) {
-		
-		//irc.getUserBot().getBot().sendIRC().message("#" + ConfigFile.getTwitchChannel(), contents); //DEBUG Old Message using IRC Direct
-		output.message(targetChannel, contents);
-		}
 }
  

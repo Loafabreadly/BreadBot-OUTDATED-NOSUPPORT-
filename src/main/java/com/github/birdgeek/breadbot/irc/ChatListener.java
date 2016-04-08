@@ -24,7 +24,7 @@ public class ChatListener extends ListenerAdapter {
 			if (e.getMessage().equalsIgnoreCase("#toggle") && IrcUtility.isApprovedUser(e.getUser().getNick())) {
 				boolean relay = ConfigFile.shouldIrcRelay();
 				ConfigFile.setIrcRelay(!relay);
-				e.respondChannel("Now doing relay = " + IrcUtility.isDoingRelay()); //DEBUG Test this out
+				e.respondChannel("Now doing relay = " + IrcUtility.isDoingRelay()); //Working
 				IrcMain.ircLog.info("Relay is now: " + IrcUtility.isDoingRelay());
 			}
 		
@@ -35,8 +35,8 @@ public class ChatListener extends ListenerAdapter {
 				if (!IrcUtility.isCommand(e)) {
 					DiscordMain.jda.getTextChannelById(ConfigFile.getTwitchDiscordChannelID())
 					.sendMessage(
-							"{" + e.getChannel().getName() + "}" +
-							" [" + e.getUser().getNick() + "] " + 
+							"{**" + e.getChannel().getName() + "**}" +
+							" [*" + e.getUser().getNick() + "*] " + 
 							e.getMessage());
 				}	
 			}

@@ -20,11 +20,10 @@ public class PmEvent extends ListenerAdapter {
 		this.discordLog = log;
 	}
 	
-	public void onMessageReceivedEvent(PrivateMessageReceivedEvent e) {
+	public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
+			if (e.getAuthor().getId().equalsIgnoreCase(ConfigFile.getOwnerID())) { //Only owner can change the bot from PMS
 
-			if (e.getAuthor().getUsername().equalsIgnoreCase("" + ConfigFile.getOwnerID())) { //Only owner can change the bot from PMS
-
-				
+				discordLog.trace("Got PM from Owner");
 				switch (e.getMessage().getContent()) {
 				
 				case "#stats": //prints out from the stats file
@@ -70,7 +69,8 @@ public class PmEvent extends ListenerAdapter {
 					}
 
 					if (configEditCmd[0].equalsIgnoreCase("relayValue")) { //DEBUG "Config:relayValue:[ConfigKey]"
-						e.getChannel().sendMessage((String) ConfigFile.config.getProperty(configEditCmd[1]));
+						discordLog.debug("Told to relay value of: " + configEditCmd[1]);
+						e.getChannel().sendMessage(ConfigFile.config.getProperty(configEditCmd[1]).toString());
 					}
 					//Some other second string
 					break;
@@ -81,8 +81,8 @@ public class PmEvent extends ListenerAdapter {
 				}
 			}
 			else {
-				
+				e.getChannel().sendMessage("Sorry something went wrong!");
 			}
-			e.getChannel().sendMessage("Sorry something went wrong!");
+
 		}
 }
