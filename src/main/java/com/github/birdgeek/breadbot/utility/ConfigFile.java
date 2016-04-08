@@ -7,7 +7,7 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 import com.github.birdgeek.breadbot.BotMain;
 
 public class ConfigFile {
-	static String filename = "myConfig.cfg"; //TODO Set this different for releases
+	static String filename = "config.cfg"; //TODO Set this different for releases
 	public static PropertiesConfiguration config;
 	
 	public ConfigFile ()  {

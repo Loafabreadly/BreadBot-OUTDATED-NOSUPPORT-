@@ -26,17 +26,17 @@ the next few months and will eventually release beta builds when I feel it can b
 
 ## Installation
 
-###### Current Version: [0.0.5a](https://github.com/Birdgeek/BreadBot/releases/tag/v0.0.5a)
-###### InDev Version: [0.0.6a](https://github.com/Birdgeek/BreadBot/tree/0.0.6a)
+###### Current Version: [0.0.6](https://github.com/Birdgeek/BreadBot/releases/tag/0.0.6)
+###### InDev Version: [TBA](https://github.com/Birdgeek/BreadBot)
 
 
 
-I just released a pre-release build of breadbot that you can find [here](https://github.com/Birdgeek/BreadBot/releases/tag/v0.0.5a)!
+I just released a pre-release build of breadbot that you can find [here](https://github.com/Birdgeek/BreadBot/releases/tag/0.0.6)!
 You can join the discord server and mess around with the bot if you want! [Invite](http://www.discord.gg/0sC78ow078EJdwnL)
 
 ## Usage
 
-Each release will be installed and used differently because I will be changing things so rapidly. Checkout out the current release: [0.0.5a](https://github.com/Birdgeek/BreadBot/releases/tag/v0.0.5a)
+Each release will be installed and used differently because I will be changing things so rapidly. Checkout out the current release: [0.0.6](https://github.com/Birdgeek/BreadBot/releases/tag/0.0.6)
 
 ## Contributing
 

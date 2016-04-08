@@ -15,7 +15,7 @@ import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
 
 public class StatsFile {
 	//static PropertiesConfiguration statsFile = new PropertiesConfiguration();
-	String fileName = "myStats.cfg";
+	String fileName = "stats.cfg";
 	static PropertiesConfiguration stats;
 	static StringBuilder sb;
 	public StatsFile ()  {
