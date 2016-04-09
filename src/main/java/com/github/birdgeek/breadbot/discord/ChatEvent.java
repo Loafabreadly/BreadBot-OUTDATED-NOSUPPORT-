@@ -1,5 +1,6 @@
 package com.github.birdgeek.breadbot.discord;
 
+import java.io.IOException;
 import java.util.Random;
 import org.apache.commons.configuration.ConfigurationException;
 import org.slf4j.Logger;
@@ -7,10 +8,10 @@ import org.slf4j.Logger;
 import com.github.birdgeek.breadbot.BotMain;
 import com.github.birdgeek.breadbot.utility.ConfigFile;
 import com.github.birdgeek.breadbot.utility.DiscordUtility;
+import com.github.birdgeek.breadbot.utility.GoogleSearch;
 import com.github.birdgeek.breadbot.utility.StatsFile;
 
 import net.dv8tion.jda.JDA;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 
@@ -28,6 +29,7 @@ public class ChatEvent extends ListenerAdapter {
 			"help", "globalhelp", "dev", "ping", "stats", 
 			"disconnect", "kill", "flip", "uptime", "currenttime"
 			, "reload", "config", "attach", "getChannel", "getServer"
+			, "google"
 			};
 	
 	public ChatEvent(JDA jda, Logger discordLog) {
@@ -100,6 +102,7 @@ public class ChatEvent extends ListenerAdapter {
 			 }			
 			break;
 			
+		case "#?":
 		case "#help":
 			DiscordUtility.delMessage(e);
 			StatsFile.updateCount("help");			
@@ -149,6 +152,7 @@ public class ChatEvent extends ListenerAdapter {
 			}
 			break;
 			
+		case "#d":
 		case "#debug":
 			if (DiscordUtility.isApprovedUser(username)) {
 				
@@ -156,12 +160,19 @@ public class ChatEvent extends ListenerAdapter {
 				discordLog.trace(e.getAuthor().getUsername() + "  issued the debug command!");
 			}
 			break;
-		
+			
+		case "#getchan":
+		case "#getchannel":
 		case "#getChannel":
-				e.getAuthor().getPrivateChannel().sendMessage("ID For : '" + e.getChannel().getName() + "' is: " + e.getChannel().getId());
+				e.getChannel().sendMessage("ID For : '" + e.getChannel().getName() + "' is: " + e.getChannel().getId());
+				StatsFile.updateCount("getChannel");
 			break;
+			
+		case "#getserv":
+		case "#getserver":
 		case "#getServer":
-			e.getAuthor().getPrivateChannel().sendMessage("ID For : " + e.getGuild().getName() + " is :" + e.getGuild().getId());
+			e.getChannel().sendMessage("ID For : " + e.getGuild().getName() + " is :" + e.getGuild().getId());
+			StatsFile.updateCount("getServer");
 			break;
 		
 		case "#attach":
@@ -184,8 +195,19 @@ public class ChatEvent extends ListenerAdapter {
 							+ jda.getTextChannelById("" + ConfigFile.getHomeChannel()).getName() + ")");
 					}
 				}
+				StatsFile.updateCount("attach");
 			}
 			break;
+		}
+		if (e.getMessage().getContent().length() > 3 && e.getMessage().getContent().substring(0, 3).contentEquals("#g ")) {
+			StatsFile.updateCount("google");
+			String search_query = e.getMessage().getContent().substring(3);
+			try {
+				GoogleSearch.search(search_query, e);
+			} catch (IOException e1) {
+				discordLog.error(e1.getMessage());
+			}
+			discordLog.trace("A google search was performed!");
 		}
 	}
 	

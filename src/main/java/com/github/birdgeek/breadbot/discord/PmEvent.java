@@ -80,7 +80,7 @@ public class PmEvent extends ListenerAdapter {
 					break;
 				}
 			}
-			else {
+			else if (!e.getAuthor().getId().equalsIgnoreCase(DiscordMain.botID)) {
 				e.getChannel().sendMessage("Sorry something went wrong!");
 			}
 
