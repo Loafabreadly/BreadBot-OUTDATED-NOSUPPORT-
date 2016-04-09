@@ -13,13 +13,12 @@ import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Message;
 import net.dv8tion.jda.entities.PrivateChannel;
-import net.dv8tion.jda.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.events.message.guild.GuildMessageReceivedEvent;
 
 public class DiscordUtility {
 	static JDA jda;
 	static Logger discordLog;
-	private static String helpFileName ="help.txt";
+	private static String helpFileName = "help.txt";
 	static String[] approvedUsers = getApprovedUsers();
 	
 	public DiscordUtility(JDA api, Logger log) {
@@ -57,8 +56,8 @@ public class DiscordUtility {
 
 	public static void sendHelp(GuildMessageReceivedEvent e) {
 		if (!e.getAuthor().getUsername().equalsIgnoreCase(jda.getSelfInfo().getUsername())) {
-			e.getAuthor().getPrivateChannel().sendMessage("Welcome to the help command! Below are all the commands you can run!");
-			e.getAuthor().getPrivateChannel().sendMessage(new MessageBuilder().appendCodeBlock(getHelpCommands(), "python").build());
+			e.getAuthor().getPrivateChannel().sendMessage(new MessageBuilder().appendString("Welcome to the help command! Below are all the commands you can run!")
+					.appendCodeBlock(getHelpCommands(), "python").build());
 		}
 		else {
 			e.getChannel().sendMessage("Cannot send help to yourself in PM; try #global help");

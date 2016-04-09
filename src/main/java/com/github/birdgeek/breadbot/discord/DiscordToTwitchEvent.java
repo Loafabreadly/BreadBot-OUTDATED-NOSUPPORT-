@@ -13,7 +13,7 @@ public class DiscordToTwitchEvent extends ListenerAdapter {
 	}
 	
 	public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
-
+		if (ConfigFile.shouldEnableTwitch()) {
 		if (e.getChannel().getId().equalsIgnoreCase(ConfigFile.getTwitchDiscordChannelID())) {
 				if (e.getMessage().getContent().charAt(0) == '^') {
 					if (e.getAuthor().getId().equalsIgnoreCase(ConfigFile.getOwnerID())) {
@@ -30,5 +30,6 @@ public class DiscordToTwitchEvent extends ListenerAdapter {
 		else {
 			BotMain.discordLog.warn("Failed Channel");
 		}		
+	}
 	}
 }

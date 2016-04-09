@@ -18,7 +18,7 @@ public class BotMain {
 	public static long start;
 	static ConfigFile config;
 	static StatsFile stats;
-	static String version;
+	public static String version;
 	public static Logger discordLog;
 	public static Logger ircLog;
 	public static Logger systemLog;

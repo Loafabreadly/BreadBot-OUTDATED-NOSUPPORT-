@@ -14,10 +14,11 @@ import net.dv8tion.jda.events.message.priv.PrivateMessageReceivedEvent;
 
 
 public class StatsFile {
-	//static PropertiesConfiguration statsFile = new PropertiesConfiguration();
-	String fileName = "stats.cfg";
+	
+	String fileName = "myStats.cfg";
 	static PropertiesConfiguration stats;
 	static StringBuilder sb;
+	
 	public StatsFile ()  {
 		try {
 			StatsFile.stats = new PropertiesConfiguration(fileName);
@@ -38,10 +39,8 @@ public class StatsFile {
 	}
 	
 	static public void readKeys(MessageReceivedEvent e) {
-		Message mess = null;
-
 		for (int i=0; i < ChatEvent.availableCommands.length; i++) {
-			mess  = new MessageBuilder().appendString(ChatEvent.availableCommands[i].toString() + " = " +stats.getInt(ChatEvent.availableCommands[i])).build();
+			new MessageBuilder().appendString(ChatEvent.availableCommands[i].toString() + " = " +stats.getInt(ChatEvent.availableCommands[i])).build();
 			sb.append(ChatEvent.availableCommands[i].toString() + "=" + stats.getInt(ChatEvent.availableCommands[i] + "\n"));
 		}
 		e.getChannel().sendMessage(sb.toString());

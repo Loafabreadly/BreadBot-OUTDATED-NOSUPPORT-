@@ -16,6 +16,7 @@ public class DiscordMain {
 	
 	public static JDA jda;
 	static Logger discordLog;
+	static String botID;
 	
 	public static void setup(Logger log) {
 		discordLog = log;
@@ -32,7 +33,8 @@ public class DiscordMain {
 		} //Builds the discord bot - Blocks everything until API is ready
 	
 		jda.getAccountManager().setGame("Breadbot V: " + ConfigFile.getVersion());
-		new DiscordUtility(DiscordMain.jda, discordLog); //Setup for Util class - passes JDA and Logger		
+		new DiscordUtility(DiscordMain.jda, discordLog); //Setup for Util class - passes JDA and Logger	
+		botID = jda.getSelfInfo().getId();
 		sendWelcome();
 	}
 	
