@@ -3,6 +3,7 @@ package com.github.birdgeek.breadbot.discord;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.utility.ConfigFile;
@@ -20,7 +21,7 @@ public class PmEvent extends ListenerAdapter {
 		this.discordLog = log;
 	}
 	
-	public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) {
+	public void onPrivateMessageReceived(PrivateMessageReceivedEvent e) { //FIXME Must go about this the same way Google command is done
 			if (e.getAuthor().getId().equalsIgnoreCase(ConfigFile.getOwnerID())) { //Only owner can change the bot from PMS
 
 				discordLog.trace("Got PM from Owner");
@@ -31,7 +32,7 @@ public class PmEvent extends ListenerAdapter {
 					StatsFile.updateCount("stats");
 					break;
 					
-					//TODO Test this config editing
+					//FIXME It doesnt work like this
 				case "#config": //Edit the config from discord PM's
 					String[] configEditCmd = e.getMessage().getContent().substring(7).split(":"); 
 					//each part of the editing process needs to be
@@ -43,6 +44,11 @@ public class PmEvent extends ListenerAdapter {
 						case "toggleirc": //Toggle the IRC Relay
 							boolean relay = !ConfigFile.shouldIrcRelay();
 							ConfigFile.config.setProperty("IRC_Relay", relay);
+							try {
+								ConfigFile.config.save();
+							} catch (ConfigurationException e1) {
+								discordLog.error(e1.getMessage());
+							}
 							e.getChannel().sendMessage("IRC Relay is now = " + relay);
 							break;
 							
@@ -54,6 +60,8 @@ public class PmEvent extends ListenerAdapter {
 								users.add(configEditCmd[3].split(",")[i]);
 								discordLog.trace("Trying to update Approved Users");
 							}
+							ConfigFile.config.setProperty("Approved_Users", users);
+							ConfigFile.save();
 							//DEBUG Runs the test right after update
 							if (DiscordUtility.isApprovedUser(testUser)) {
 								discordLog.trace("Success in Updating Approved Users");

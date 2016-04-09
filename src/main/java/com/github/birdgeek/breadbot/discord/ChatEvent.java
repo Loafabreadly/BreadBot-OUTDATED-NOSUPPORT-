@@ -27,7 +27,7 @@ public class ChatEvent extends ListenerAdapter {
 	
 	public static String[] availableCommands = {
 			"help", "globalhelp", "dev", "ping", "stats", 
-			"disconnect", "kill", "flip", "uptime", "currenttime"
+			"kill", "flip", "uptime", "currenttime"
 			, "reload", "config", "attach", "getChannel", "getServer"
 			, "google"
 			};
@@ -37,7 +37,7 @@ public class ChatEvent extends ListenerAdapter {
 		this.discordLog = discordLog;
 	}
 	
-	/*
+	/**
 	 * On Discord Message Received
 	 * @see net.dv8tion.jda.hooks.ListenerAdapter#onMessageReceived(net.dv8tion.jda.events.message.MessageReceivedEvent)
 	 */
@@ -53,19 +53,6 @@ public class ChatEvent extends ListenerAdapter {
 			break;
 		
 		case "#disconnect":
-			if (DiscordUtility.isApprovedUser(username)) {
-
-				discordLog.info(e.getAuthor().getUsername() + " has stopped the bot!");
-
-				DiscordUtility.delMessage(e);
-				StatsFile.updateCount("disconnect");
-				jda.shutdown();
-			}
-			else {
-				e.getAuthor().getPrivateChannel().sendMessage("You are not authorized to do that!");
-				}			
-			break;
-			
 		case "#kill":
 			if (DiscordUtility.isApprovedUser(username)) {
 
@@ -73,6 +60,11 @@ public class ChatEvent extends ListenerAdapter {
 
 				DiscordUtility.delMessage(e);
 				StatsFile.updateCount("kill");
+				try {
+					ConfigFile.config.save();
+				} catch (ConfigurationException e1) {
+					discordLog.error(e1.getMessage());
+				}
 				/*
 				if (IrcMain.isRunning) {
 					IrcMain.irc.close();

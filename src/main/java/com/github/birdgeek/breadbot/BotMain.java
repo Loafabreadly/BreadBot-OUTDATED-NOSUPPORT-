@@ -35,7 +35,7 @@ public class BotMain {
 		systemLog = LoggerFactory.getLogger("System");
 	
 		
-		config = new ConfigFile();
+		config = new ConfigFile(systemLog);
 		stats = new StatsFile();
 		
 		start = System.currentTimeMillis();

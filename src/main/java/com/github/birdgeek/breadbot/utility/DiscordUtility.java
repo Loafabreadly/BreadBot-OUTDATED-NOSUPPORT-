@@ -26,10 +26,20 @@ public class DiscordUtility {
 		DiscordUtility.discordLog = log;
 	}
 	
-	public static String getUsernameID(GuildMessageReceivedEvent e) {
-		return e.getAuthor().getId();
+	/**
+	 * Returns the ID of a specific User
+	 * 
+	 * @param guildMessageEvent - Require this to get the Author
+	 * @return Author ID
+	 */
+	public static String getUsernameID(GuildMessageReceivedEvent guildMessageEvent) {
+		return guildMessageEvent.getAuthor().getId();
 	}
 
+	/**
+	 * @return - t/f depending on if ID of user is = to ID of Owner from config
+	 * 
+	 */
 	public static boolean isOwner(String username) {
 		if (ConfigFile.getOwnerID().toString().equalsIgnoreCase(username))
 			return true;
@@ -37,39 +47,58 @@ public class DiscordUtility {
 			return false;
 	}
 
-	//TODO: Comment all these functions below
-	public static void delMessage(GuildMessageReceivedEvent e) {
+	/**
+	 * Deletes the command the user issued - Keeps txt channels clean
+	 * @param guildMessageEvent
+	 */
+	public static void delMessage(GuildMessageReceivedEvent guildMessageEvent) {
 
 		if (ConfigFile.shouldDelete()) {
 			
-			e.getMessage().deleteMessage();
+			guildMessageEvent.getMessage().deleteMessage();
 		}
 	}
-
-	public static void sendGlobalHelp(GuildMessageReceivedEvent e) {
-		e.getChannel().sendMessage(new MessageBuilder()
+	/**
+	 * Sends help to Text Channel
+	 * @param guildMessageEvent - Required to send to text channel
+	 * @return Returns the help.txt in a formatted code block
+	 */
+	public static void sendGlobalHelp(GuildMessageReceivedEvent guildMessageEvent) {
+		guildMessageEvent.getChannel().sendMessage(new MessageBuilder()
 				.appendString("Welcome to the help command! Below are all the commands you can run!")
 				.appendCodeBlock(getHelpCommands(), "python")
 				.build());
 		
 	}
 
-	public static void sendHelp(GuildMessageReceivedEvent e) {
-		if (!e.getAuthor().getUsername().equalsIgnoreCase(jda.getSelfInfo().getUsername())) {
-			e.getAuthor().getPrivateChannel().sendMessage(new MessageBuilder().appendString("Welcome to the help command! Below are all the commands you can run!")
+	/**
+	 * Sends help to Private Channel
+	 * @param guildMessageEvent - Required to send to PrivateChannel from Author
+	 * @return - Returns help.txt in a formatted code block <b>in the private channel</b> of the user who issued the command
+	 */
+	public static void sendHelp(GuildMessageReceivedEvent guildMessageEvent) {
+		if (!guildMessageEvent.getAuthor().getUsername().equalsIgnoreCase(jda.getSelfInfo().getUsername())) {
+			guildMessageEvent.getAuthor().getPrivateChannel().sendMessage(new MessageBuilder().appendString("Welcome to the help command! Below are all the commands you can run!")
 					.appendCodeBlock(getHelpCommands(), "python").build());
 		}
 		else {
-			e.getChannel().sendMessage("Cannot send help to yourself in PM; try #global help");
+			guildMessageEvent.getChannel().sendMessage("Cannot send help to yourself in PM; try #global help");
 		}
 	}
-	
-	public static void sendHelp(PrivateChannel e) {
-		e.sendMessage(new MessageBuilder().appendCodeBlock(getHelpCommands(), "python").build());
+	/**
+	 * Sends help to Private channel (issued from Private Channel)
+	 * @param privateChannel - Required to respond directly to Private Channel
+	 * @return - Returns help.txt in a formatted code block
+	 */
+	public static void sendHelp(PrivateChannel privateChannel) {
+		privateChannel.sendMessage(new MessageBuilder().appendCodeBlock(getHelpCommands(), "python").build());
 	}
 	
-
-	public static void sendUptime(GuildMessageReceivedEvent e) {
+	/**Sends uptime to text channel where cmd was issued
+	 * @param guildMessageEvent
+	 * @return -Sends uptime to text channel
+	 */
+	public static void sendUptime(GuildMessageReceivedEvent guildMessageEvent) {
 		long different = System.currentTimeMillis() - BotMain.start;
 		long secondsInMilli = 1000;
 		long minutesInMilli = secondsInMilli * 60;
@@ -90,9 +119,13 @@ public class DiscordUtility {
 		    elapsedDays,
 		    elapsedHours, elapsedMinutes, elapsedSeconds);
 		
-		e.getChannel().sendMessage( "I have been online for " + time);	
+		guildMessageEvent.getChannel().sendMessage( "I have been online for " + time);	
 		}
 
+	/**
+	 * 
+	 * @return String of everything in help.txt file
+	 */
 	private static String getHelpCommands() {
 		
 		StringBuilder sb = new StringBuilder();
@@ -121,14 +154,27 @@ public class DiscordUtility {
 		return "It must have failed on me :(";
 	}
 
+	/**
+	 * 
+	 * @return ApprovedUsers Array
+	 */
 	public static String[] getApprovedUsers() {
 		return ConfigFile.getApprovedUsers();
 		
 	}
-	public static String getUsername(GuildMessageReceivedEvent e) {
-		return e.getAuthor().getUsername();
+	/**
+	 * @param guildMessageEvent
+	 * @return String of username
+	 */
+	public static String getUsername(GuildMessageReceivedEvent guildMessageEvent) {
+		return guildMessageEvent.getAuthor().getUsername();
 	}
 	
+	/**
+	 * 
+	 * @param username
+	 * @return t/f depending on if user is approved for discord
+	 */
 	public static boolean isApprovedUser(String username) {
 		for (int i=0; i < approvedUsers.length; i++) {
 			if (username.equalsIgnoreCase(approvedUsers[i])) {
@@ -138,29 +184,31 @@ public class DiscordUtility {
 			return false;
 	}
 	
+	/**
+	 * @return Prints diagnositcs to home channel
+	 */
 	public static void printDiagnostics() {
-		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage("test");
+		
 		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage(
 				new MessageBuilder().appendCodeBlock(""
 				+ "Home Channel: " + ConfigFile.getHomeChannel() + "/" + jda.getTextChannelById(ConfigFile.getHomeChannel()).getName()
 				+ "\nHome Guild:" + ConfigFile.getHomeGuild() + "/" + jda.getGuildById(ConfigFile.getHomeGuild()).getName()
-				+ "\nOwner: " + ConfigFile.getOwnerID() + "/" + jda.getUserById(ConfigFile.getOwnerID())
+				+ "\nOwner: " + jda.getUserById(ConfigFile.getOwnerID())
 				, "python")
 				.build());
-		/*
-		sendMessage(new MessageBuilder().appendCodeBlock(""
-				+ "Home Channel: " + ConfigFile.getHomeChannel() + "/" + jda.getTextChannelById(ConfigFile.getHomeChannel()).getName()
-				+ "\nHome Guild:" + ConfigFile.getHomeGuild() + "/" + jda.getGuildById(ConfigFile.getHomeGuild()).getName()
-				+ "\nOwner: " + ConfigFile.getOwnerID() + "/" + jda.getUserById(ConfigFile.getOwnerID())
-				, "python")
-				.build());
-		*/
 		}
+	/**
+	 * @return sends message to home channel
+	 * @param contents
+	 */
 	public static void sendMessage(String contents) {
 		jda.getTextChannelById("" +ConfigFile.getHomeChannel()).sendMessage(contents);
 	
 	}
-
+	/**
+	 * @return sends message to home channel
+	 * @param message
+	 */
 	public static void sendMessage(Message message) {
 		jda.getTextChannelById("" +ConfigFile.getHomeChannel()).sendMessage(message);
 	}

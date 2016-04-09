@@ -12,7 +12,12 @@ public class IrcUtility extends ListenerAdapter  {
 	public IrcUtility() {
 		targetChannel = "#" + ConfigFile.getTwitchChannel();
 	}
-
+	
+	/**
+	 * Check to see if user is on ignored list
+	 * @param String of user checking for ignored
+	 * @return t/f depending on if user is ignored
+	 */
 	public static boolean isIgnored(String nick) {
 		String[] ignoredUsers = ConfigFile.getIgnoredIrcUsers();
 		
@@ -24,12 +29,16 @@ public class IrcUtility extends ListenerAdapter  {
 		return false;
 	}
 
-	//Should we relay the command?
-	public static boolean isCommand(MessageEvent e) {
+	/**
+	 * 
+	 * @param messageEvent
+	 * @return t/f depending on if the line read is a cmd
+	 */
+	public static boolean isCommand(MessageEvent messageEvent) {
 		
 		for (String ircCommand : ircCommands) {
 			
-			if (e.getMessage().equalsIgnoreCase(ircCommand)) {
+			if (messageEvent.getMessage().equalsIgnoreCase(ircCommand)) {
 				return true;
 			}
 			else {
@@ -39,15 +48,16 @@ public class IrcUtility extends ListenerAdapter  {
 		return false;
 	}
 	
-	/*
-	 * Should we be relaying the IRC chat to the discord channel?
+	/**
+	 * 
+	 * @return Should we be doing the relay?
 	 */
 	public static boolean isDoingRelay() {
 		return ConfigFile.shouldIrcRelay();
 	}
 
-	/*
-	 * Method for finding is a specific user is admin on Bot
+	/**
+	 * @return Method for finding is a specific user is admin on Bot
 	 */
 	public static boolean isApprovedUser(String username) {
 		for (int i=0; i < ConfigFile.getApprovedIRCUsers().length; i++) {

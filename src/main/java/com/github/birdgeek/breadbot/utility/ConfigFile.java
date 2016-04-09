@@ -3,18 +3,29 @@ package com.github.birdgeek.breadbot.utility;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.BotMain;
 
 public class ConfigFile {
 	static String filename = "myConfig.cfg"; //TODO Set this different for releases
 	public static PropertiesConfiguration config;
+	static Logger systemLog;
 	
-	public ConfigFile ()  {
+	public ConfigFile (Logger log)  {
+		ConfigFile.systemLog = log;
 		try {
 			ConfigFile.config = new PropertiesConfiguration(filename);
 		} catch (ConfigurationException e) {
 			BotMain.systemLog.warn(e.getMessage());
+		}
+	}
+	
+	public static void save() {
+		try {
+			config.save();
+		} catch (ConfigurationException e) {
+			systemLog.error(e.getMessage());
 		}
 	}
 	
