@@ -26,8 +26,9 @@ public class GoogleSearch {
 		GoogleSearch.systemLog = log;
 	}
 	
-	public static void search(String query, GuildMessageReceivedEvent event) throws IOException {
-			 Elements links = Jsoup.connect(address + URLEncoder.encode(query, charset) + "&num=2").userAgent(userAgent).get().select(".g>.r>a");
+	public static void search(String query, GuildMessageReceivedEvent event, boolean returnResults) throws IOException {
+		if (!returnResults) {	
+		Elements links = Jsoup.connect(address + URLEncoder.encode(query, charset) + "&num=2").userAgent(userAgent).get().select(".g>.r>a");
 			 for (Element link : links) {
 				    String title = link.text();
 				    String url = link.absUrl("href"); // Google returns URLs in format "http://www.google.com/url?q=<url>&sa=U&ei=<someKey>".
@@ -41,11 +42,11 @@ public class GoogleSearch {
 					 .appendString("**Site Title:** " + title
 							 + "\n**URL**: " + url)
 					 .build().getContent();
-			//String str1 = str.replaceAll("<b>", "");
-			//String str2 =  str1.replaceAll("</b>", "");
 			 event.getChannel().sendMessage(str);
-			
-
 			 }
+		}
+		else {
+			event.getChannel().sendMessage("`Results` "  + address+ URLEncoder.encode(query, charset));
+		}
 	}
 }

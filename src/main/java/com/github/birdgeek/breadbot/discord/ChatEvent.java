@@ -168,15 +168,18 @@ public class ChatEvent extends ListenerAdapter {
 			break;
 		
 		case "#attach":
-			if (DiscordUtility.isOwner(DiscordUtility.getUsernameID(e))) {
+			if (DiscordUtility.isOwner(DiscordUtility.getUsernameID(e))) { //Is it the owner
 				e.getChannel().sendMessage("Trying to switch the home channel");
 				if (ConfigFile.getHomeChannel().toString().equalsIgnoreCase(e.getChannel().getId())) {
 					e.getChannel().sendMessage("**This is already the home channel!**");
 				}
 				else {
+					String oldID = ConfigFile.getHomeChannel();
+					jda.getTextChannelById(oldID).sendMessage("*woosh*");
 					ConfigFile.config.setProperty("Home_Channel_ID",  e.getChannel().getId());
-					if (ConfigFile.getHomeChannel().toString().equalsIgnoreCase(e.getChannel().getId())) {
+					if (ConfigFile.getHomeChannel().equalsIgnoreCase(e.getChannel().getId())) {
 					e.getChannel().sendMessage("Success! Home channel is now: " + e.getChannel().getName());
+					e.getChannel().sendMessage("**Hello world!**");
 					discordLog.trace("The owner changed the home channel to: " + e.getChannel().getName());
 					}
 					else {
@@ -191,15 +194,24 @@ public class ChatEvent extends ListenerAdapter {
 			}
 			break;
 		}
-		if (e.getMessage().getContent().length() > 3 && e.getMessage().getContent().substring(0, 3).contentEquals("#g ")) {
+		if (e.getMessage().getContent().length() > 3 && e.getMessage().getContent().substring(0, 3).contentEquals("#g ")) { //Top result
 			StatsFile.updateCount("google");
 			String search_query = e.getMessage().getContent().substring(3);
 			try {
-				GoogleSearch.search(search_query, e);
+				GoogleSearch.search(search_query, e, false);
 			} catch (IOException e1) {
 				discordLog.error(e1.getMessage());
 			}
 			discordLog.trace("A google search was performed!");
+		}
+		if (e.getMessage().getContent().length() > 4 && e.getMessage().getContent().substring(0, 4).contentEquals("#gs ")) { //Search results
+			StatsFile.updateCount("google");
+			String search_query = e.getMessage().getContent().substring(4);
+			try {
+				GoogleSearch.search(search_query, e, true);
+			} catch (IOException e1) {
+			discordLog.error(e1.getMessage());
+			}
 		}
 	}
 	
