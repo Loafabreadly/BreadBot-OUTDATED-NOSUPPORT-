@@ -46,12 +46,8 @@ public class ConfigFile {
 	/*
 	 * Strings
 	 */
-	public static String getEmail() throws ConfigurationException {
-		return config.getString("Email");
-	}
-	
-	public static String getPassword() throws ConfigurationException {
-		return config.getString("Password");
+	public static String getBotToken() {
+		return config.getString("Bot_Token");
 	}
 	
 	public static String getVersion() {

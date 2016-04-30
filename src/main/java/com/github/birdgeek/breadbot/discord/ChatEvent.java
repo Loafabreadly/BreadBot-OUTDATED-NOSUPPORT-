@@ -177,14 +177,19 @@ public class ChatEvent extends ListenerAdapter {
 					String oldID = ConfigFile.getHomeChannel();
 					jda.getTextChannelById(oldID).sendMessage("*woosh*");
 					ConfigFile.config.setProperty("Home_Channel_ID",  e.getChannel().getId());
+					try {
+						ConfigFile.config.save();
+					} catch (ConfigurationException e1) {
+						discordLog.error(e1.getLocalizedMessage());
+					}
 					if (ConfigFile.getHomeChannel().equalsIgnoreCase(e.getChannel().getId())) {
-					e.getChannel().sendMessage("Success! Home channel is now: " + e.getChannel().getName());
-					e.getChannel().sendMessage("**Hello world!**");
-					discordLog.trace("The owner changed the home channel to: " + e.getChannel().getName());
+						e.getChannel().sendMessage("**Hello world!**");
+						e.getChannel().sendMessage("Success! Home channel is now: " + e.getChannel().getName());
+						discordLog.trace("The owner changed the home channel to: " + e.getChannel().getName());
 					}
 					else {
-					e.getChannel().sendMessage("Failed the check, try setting it manually in the .cfg");
-					discordLog.warn("Changing the home channel failed! Tried to change it to: (" + e.getChannel().getId() + "/" 
+						e.getChannel().sendMessage("Failed the check, try setting it manually in the .cfg");
+						discordLog.warn("Changing the home channel failed! Tried to change it to: (" + e.getChannel().getId() + "/" 
 							+ e.getChannel().getName()
 							+ ") and current is: (" + ConfigFile.getHomeChannel() + "/" 
 							+ jda.getTextChannelById("" + ConfigFile.getHomeChannel()).getName() + ")");

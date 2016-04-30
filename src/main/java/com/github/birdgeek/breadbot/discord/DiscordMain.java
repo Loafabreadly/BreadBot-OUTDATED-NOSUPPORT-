@@ -2,7 +2,6 @@ package com.github.birdgeek.breadbot.discord;
 
 import javax.security.auth.login.LoginException;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.utility.ConfigFile;
@@ -22,13 +21,13 @@ public class DiscordMain {
 		discordLog = log;
 	
 		try {
-			jda = new JDABuilder(ConfigFile.getEmail(), ConfigFile.getPassword())
+			jda = new JDABuilder()
+				.setBotToken(ConfigFile.getBotToken())
 				.addListener(new ChatEvent(jda, discordLog)) //Pass API and Specific Logger
-				.addListener(new InviteEvent()) 
 				.addListener(new DiscordToTwitchEvent())
 				.addListener(new PmEvent(discordLog)) //Passes Logger
 				.buildBlocking();
-		} catch (LoginException | IllegalArgumentException | ConfigurationException | InterruptedException e) {
+		} catch (LoginException | IllegalArgumentException | InterruptedException e) {
 		discordLog.error(e.getMessage());
 		} //Builds the discord bot - Blocks everything until API is ready
 	
@@ -43,21 +42,21 @@ public class DiscordMain {
 	 */
 	public static void sendWelcome() {
 		
-		jda.getTextChannelById("" + ConfigFile.getHomeChannel()).sendMessage(
+		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage(
 				new MessageBuilder()
 				.appendCodeBlock("Welcome to Bread Bot! \n"
 						+ "Version: " + ConfigFile.getVersion()
-						, "python")
+						, "md")
 				.build());
 		
 		if (ConfigFile.shouldSendWelcomeMention()) { //Should we mention the Owner
-			jda.getTextChannelById("" + ConfigFile.getHomeChannel()).sendMessage(new MessageBuilder()
+			jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage(new MessageBuilder()
 					.appendString("I am being run by ")
-					.appendMention(jda.getUserById("" + ConfigFile.getOwnerID()))
+					.appendMention(jda.getUserById(ConfigFile.getOwnerID()))
 					.build());
 		}
 		
-		jda.getTextChannelById("" + ConfigFile.getHomeChannel()).sendMessage("You can read more about me here - http://birdgeek.github.io/BreadBot/");
+		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage("You can read more about me here - http://birdgeek.github.io/BreadBot/");
 	}
 	
 }
