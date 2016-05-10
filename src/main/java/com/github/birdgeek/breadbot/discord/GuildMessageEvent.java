@@ -43,14 +43,9 @@ public class GuildMessageEvent extends ListenerAdapter {
 		String username = DiscordUtility.getUsername(e);
 					
 		switch (e.getMessage().getContent()) {
-		
-		case "#Ping":
-			DiscordUtility.delMessage(e);
-			e.getChannel().sendMessage("PONG");
-			StatsFile.updateCount("Ping");
-			break;
-		
-		case "#disconnect":
+
+
+			case "#disconnect":
 		case "#kill":
 			if (DiscordUtility.isApprovedUser(username)) {
 
@@ -63,12 +58,6 @@ public class GuildMessageEvent extends ListenerAdapter {
 				} catch (ConfigurationException e1) {
 					discordLog.error(e1.getMessage());
 				}
-				/*
-				if (IrcMain.isRunning) {
-					IrcMain.irc.close();
-				}
-				*/
-				//jda.shutdown();
 				System.exit(0);
 
 			}
@@ -164,38 +153,7 @@ public class GuildMessageEvent extends ListenerAdapter {
 			e.getChannel().sendMessage("ID For : " + e.getGuild().getName() + " is :" + e.getGuild().getId());
 			StatsFile.updateCount("getServer");
 			break;
-		
-		case "#attach":
-			if (DiscordUtility.isOwner(DiscordUtility.getUsernameID(e))) { //Is it the owner
-				e.getChannel().sendMessage("Trying to switch the home channel");
-				if (ConfigFile.getHomeChannel().toString().equalsIgnoreCase(e.getChannel().getId())) {
-					e.getChannel().sendMessage("**This is already the home channel!**");
-				}
-				else {
-					String oldID = ConfigFile.getHomeChannel();
-					jda.getTextChannelById(oldID).sendMessage("*woosh*");
-					ConfigFile.config.setProperty("Home_Channel_ID",  e.getChannel().getId());
-					try {
-						ConfigFile.config.save();
-					} catch (ConfigurationException e1) {
-						discordLog.error(e1.getLocalizedMessage());
-					}
-					if (ConfigFile.getHomeChannel().equalsIgnoreCase(e.getChannel().getId())) {
-						e.getChannel().sendMessage("**Hello world!**");
-						e.getChannel().sendMessage("Success! Home channel is now: " + e.getChannel().getName());
-						discordLog.trace("The owner changed the home channel to: " + e.getChannel().getName());
-					}
-					else {
-						e.getChannel().sendMessage("Failed the check, try setting it manually in the .cfg");
-						discordLog.warn("Changing the home channel failed! Tried to change it to: (" + e.getChannel().getId() + "/" 
-							+ e.getChannel().getName()
-							+ ") and current is: (" + ConfigFile.getHomeChannel() + "/" 
-							+ jda.getTextChannelById("" + ConfigFile.getHomeChannel()).getName() + ")");
-					}
-				}
-				StatsFile.updateCount("attach");
-			}
-			break;
+
 		}
 		if (e.getMessage().getContent().length() > 3 && e.getMessage().getContent().substring(0, 3).contentEquals("#g ")) { //Top result
 			StatsFile.updateCount("google");

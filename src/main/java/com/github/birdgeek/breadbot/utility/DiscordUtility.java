@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import com.github.birdgeek.breadbot.discord.DiscordMain;
 import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.BotMain;
@@ -44,7 +45,6 @@ public class DiscordUtility {
 	}
 	/**
 	 * Returns the ID of a specific User
-	 * 
 	 * @param guildMessageEvent - Require this to get the Author
 	 * @return Author ID
 	 */
@@ -109,12 +109,12 @@ public class DiscordUtility {
 	public static void sendHelp(PrivateChannel privateChannel) {
 		privateChannel.sendMessage(new MessageBuilder().appendCodeBlock(getHelpCommands(), "python").build());
 	}
-	
-	/**Sends uptime to text channel where cmd was issued
-	 * @param guildMessageEvent
-	 * @return -Sends uptime to text channel
-	 */
-	public static void sendUptime(GuildMessageReceivedEvent guildMessageEvent) {
+
+	/**
+	 *
+	 * @return the uptime formatted D:H:M:S
+     */
+	public static String getUptime() {
 		long different = System.currentTimeMillis() - BotMain.start;
 		long secondsInMilli = 1000;
 		long minutesInMilli = secondsInMilli * 60;
@@ -123,19 +123,26 @@ public class DiscordUtility {
 
 		long elapsedDays = different / daysInMilli;
 		different = different % daysInMilli;
-		
+
 		long elapsedHours = different / hoursInMilli;
 		different = different % hoursInMilli;
-		
+
 		long elapsedMinutes = different / minutesInMilli;
 		different = different % minutesInMilli;
-		
+
 		long elapsedSeconds = different / secondsInMilli;
-		String time = String.format("%d days, %d hours, %d minutes, %d seconds%n", //THANKS FOR FIXING THIS SHIT VAN
-		    elapsedDays,
-		    elapsedHours, elapsedMinutes, elapsedSeconds);
-		
-		guildMessageEvent.getChannel().sendMessage( "I have been online for " + time);	
+		String uptime = String.format("%d D:%d HR:%d MIN:%d SEC%n", //THANKS FOR FIXING THIS SHIT VAN
+				elapsedDays,
+				elapsedHours, elapsedMinutes, elapsedSeconds);
+
+		return uptime;
+	}
+	/**Sends uptime to text channel where cmd was issued
+	 * @param guildMessageEvent
+	 * @return -Sends uptime to text channel
+	 */
+	public static void sendUptime(GuildMessageReceivedEvent guildMessageEvent) {
+		guildMessageEvent.getChannel().sendMessage( "`I have been online for " + getUptime()  + "`");
 		}
 
 	/**
@@ -191,7 +198,7 @@ public class DiscordUtility {
 	 * @param username
 	 * @return t/f depending on if user is approved for discord
 	 */
-	public static boolean isApprovedUser(String username) {
+	public static boolean isApprovedUser(String username) { //TODO need to change this to ID's not usernames
 		for (int i=0; i < approvedUsers.length; i++) {
 			if (username.equalsIgnoreCase(approvedUsers[i])) {
 				return true;
@@ -205,20 +212,30 @@ public class DiscordUtility {
 	 */
 	public static void printDiagnostics() {
 		
-		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage(
-				new MessageBuilder().appendCodeBlock(""
-				+ "Home Channel: " + ConfigFile.getHomeChannel() + "/" + jda.getTextChannelById(ConfigFile.getHomeChannel()).getName()
-				+ "\nHome Guild:" + ConfigFile.getHomeGuild() + "/" + jda.getGuildById(ConfigFile.getHomeGuild()).getName()
-				+ "\nOwner: " + jda.getUserById(ConfigFile.getOwnerID())
-				, "python")
-				.build());
+		Message message = new MessageBuilder().appendCodeBlock(
+				"[BreadBot-version-" + BotMain.version+"]\n\n"
+						+ "[Uptime][" + getUptime() + "]\n"
+						+ "[Memory Usage]" + "[" + (Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()) / 1048576L
+						+ "MB / " + Runtime.getRuntime().totalMemory() / 1048576L + "MB]\n\n"
+						+ "[Discord]\n"
+						+ "[JDA Version][" + net.dv8tion.jda.JDAInfo.VERSION +"]\n"
+						+ "[Home Channel][" + DiscordMain.homeChannel + "]/[" + jda.getTextChannelById(DiscordMain.homeChannel).getName() + "]"
+						+ "\n[Home Guild][" + ConfigFile.getHomeGuild() + "]/[" + jda.getGuildById(ConfigFile.getHomeGuild()).getName() + "]"
+						+ "\n[Owner][" + jda.getUserById(ConfigFile.getOwnerID()) + "]"
+				, "MD")
+				.build();
+		sendMessage(message);
 		}
 	/**
 	 * @return sends message to home channel
 	 * @param contents
 	 */
 	public static void sendMessage(String contents) {
-		jda.getTextChannelById("" +ConfigFile.getHomeChannel()).sendMessage(contents);
+		try {
+			jda.getTextChannelById(DiscordMain.homeChannel).sendMessage(contents);
+		} catch (NullPointerException e) {
+			discordLog.error("NPE on finding Home Channel - Is the ID Correct?");
+		}
 	
 	}
 	/**
@@ -226,7 +243,11 @@ public class DiscordUtility {
 	 * @param message
 	 */
 	public static void sendMessage(Message message) {
-		jda.getTextChannelById("" +ConfigFile.getHomeChannel()).sendMessage(message);
+		try {
+			jda.getTextChannelById(DiscordMain.homeChannel).sendMessage(message);
+		} catch (NullPointerException e) {
+			discordLog.error("NPE on finding Home Channel - Is the ID Correct?");
+			}
 	}
 
 }

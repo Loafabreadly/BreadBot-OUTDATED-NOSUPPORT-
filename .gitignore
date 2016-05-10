@@ -4,6 +4,7 @@ Discord bot.jar
 myConfig.cfg
 myStats.cfg
 .idea
+.iml
 *.class
 tokens.json
 Built/

@@ -15,13 +15,17 @@ import net.dv8tion.jda.MessageBuilder;
 public class DiscordMain {
 	
 	public static JDA jda;
-	static Logger discordLog;
+	public static Logger discordLog;
 	static String botID;
 	static char callsign;
+	public static String homeChannel;
+	public static String homeGuild;
 	
 	public static void setup(Logger log) {
 		discordLog = log;
-	
+		homeChannel = ConfigFile.getHomeChannel();
+		homeGuild = ConfigFile.getHomeGuild();
+
 		try {
 			jda = new JDABuilder()
 				.setBotToken(ConfigFile.getBotToken())
@@ -46,13 +50,14 @@ public class DiscordMain {
 	 */
 	public static void sendWelcome() {
 		
-		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage( //DEBUG this sends NPE OFTEN
+		jda.getTextChannelById(DiscordMain.homeChannel).sendMessage( //DEBUG this sends NPE OFTEN
 				new MessageBuilder()
-				.appendCodeBlock("[Welcome to Bread Bot!] \n\n"
-						+ "[Version][" + BotMain.version +"]\n"
+						.appendString("*Hellow World! :bread: :robot:")
+						.appendCodeBlock("[Welcome to Bread Bot!] \n\n"
+							+ "[Version][" + BotMain.version +"]\n"
 						, "MD")
+						.appendString("You can read more about me here - http://birdgeek.github.io/BreadBot/")
 				.build());
-		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage("You can read more about me here - http://birdgeek.github.io/BreadBot/");
 	}
 	
 }
