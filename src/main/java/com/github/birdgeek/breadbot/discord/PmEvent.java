@@ -35,7 +35,7 @@ public class PmEvent extends ListenerAdapter {
 					//FIXME It doesnt work like this
 				case "#config": //Edit the config from discord PM's
 					String[] configEditCmd = e.getMessage().getContent().substring(7).split(":"); 
-					//each part of the editing process needs to be
+					//each part of the editing processMessage needs to be
 					//split up by ":"
 					if (configEditCmd[0].equalsIgnoreCase("edit")) {
 

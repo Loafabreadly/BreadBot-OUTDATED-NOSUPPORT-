@@ -5,7 +5,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 import com.github.birdgeek.breadbot.BotMain;
-import com.github.birdgeek.breadbot.discord.ChatEvent;
+import com.github.birdgeek.breadbot.discord.GuildMessageEvent;
 
 import net.dv8tion.jda.MessageBuilder;
 import net.dv8tion.jda.entities.Message;
@@ -39,8 +39,8 @@ public class StatsFile {
 	 * @return Prints all known stats to discord log
 	 */
 	static public void readKeysToConsole() {
-		for (int i=0; i < ChatEvent.availableCommands.length; i++) {
-			BotMain.discordLog.info(ChatEvent.availableCommands[i].toString() + " = " +stats.getInt(ChatEvent.availableCommands[i]));
+		for (int i = 0; i < GuildMessageEvent.availableCommands.length; i++) {
+			BotMain.discordLog.info(GuildMessageEvent.availableCommands[i].toString() + " = " +stats.getInt(GuildMessageEvent.availableCommands[i]));
 		}
 	}
 	/**
@@ -48,9 +48,9 @@ public class StatsFile {
 	 * @param messageEvent
 	 */
 	static public void readKeys(MessageReceivedEvent messageEvent) {
-		for (int i=0; i < ChatEvent.availableCommands.length; i++) {
-			new MessageBuilder().appendString(ChatEvent.availableCommands[i].toString() + " = " +stats.getInt(ChatEvent.availableCommands[i])).build();
-			sb.append(ChatEvent.availableCommands[i].toString() + "=" + stats.getInt(ChatEvent.availableCommands[i] + "\n"));
+		for (int i = 0; i < GuildMessageEvent.availableCommands.length; i++) {
+			new MessageBuilder().appendString(GuildMessageEvent.availableCommands[i].toString() + " = " +stats.getInt(GuildMessageEvent.availableCommands[i])).build();
+			sb.append(GuildMessageEvent.availableCommands[i].toString() + "=" + stats.getInt(GuildMessageEvent.availableCommands[i] + "\n"));
 		}
 		messageEvent.getChannel().sendMessage(sb.toString());
 	}
@@ -60,8 +60,8 @@ public class StatsFile {
 	 */
 	public static void readKeys(PrivateMessageReceivedEvent privateMessageevent) {
 		Message mess = null;
-		for (int i=0; i < ChatEvent.availableCommands.length; i++) {
-			mess  = new MessageBuilder().appendString(ChatEvent.availableCommands[i].toString() + " = " +stats.getInt(ChatEvent.availableCommands[i])).build();
+		for (int i = 0; i < GuildMessageEvent.availableCommands.length; i++) {
+			mess  = new MessageBuilder().appendString(GuildMessageEvent.availableCommands[i].toString() + " = " +stats.getInt(GuildMessageEvent.availableCommands[i])).build();
 		}
 		privateMessageevent.getChannel().sendMessage(mess);
 	}

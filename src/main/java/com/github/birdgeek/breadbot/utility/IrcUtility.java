@@ -60,8 +60,8 @@ public class IrcUtility extends ListenerAdapter  {
 	 * @return Method for finding is a specific user is admin on Bot
 	 */
 	public static boolean isApprovedUser(String username) {
-		for (int i=0; i < ConfigFile.getApprovedIRCUsers().length; i++) {
-			if (username.equalsIgnoreCase(ConfigFile.getApprovedIRCUsers()[i])) {
+		for (int i = 0; i < ConfigFile.getapprovedIrcusers().length; i++) {
+			if (username.equalsIgnoreCase(ConfigFile.getapprovedIrcusers()[i])) {
 				return true;
 			}
 		}

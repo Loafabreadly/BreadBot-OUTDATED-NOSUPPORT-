@@ -2,6 +2,7 @@ package com.github.birdgeek.breadbot.discord;
 
 import javax.security.auth.login.LoginException;
 
+import com.github.birdgeek.breadbot.BotMain;
 import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.utility.ConfigFile;
@@ -16,6 +17,7 @@ public class DiscordMain {
 	public static JDA jda;
 	static Logger discordLog;
 	static String botID;
+	static char callsign;
 	
 	public static void setup(Logger log) {
 		discordLog = log;
@@ -23,17 +25,19 @@ public class DiscordMain {
 		try {
 			jda = new JDABuilder()
 				.setBotToken(ConfigFile.getBotToken())
-				.addListener(new ChatEvent(jda, discordLog)) //Pass API and Specific Logger
+				.addListener(new GuildMessageListener()) //Pass API and Specific Logger
 				.addListener(new DiscordToTwitchEvent())
-				.addListener(new PmEvent(discordLog)) //Passes Logger
+				.addListener(new PrivateMessageListener())
+				//.addListener(new PmEvent(discordLog)) //Passes Logger
 				.buildBlocking();
 		} catch (LoginException | IllegalArgumentException | InterruptedException e) {
 		discordLog.error(e.getMessage());
 		} //Builds the discord bot - Blocks everything until API is ready
 	
-		jda.getAccountManager().setGame("Breadbot V: " + ConfigFile.getVersion());
+		jda.getAccountManager().setGame("Breadbot V: " + BotMain.version);
 		new DiscordUtility(DiscordMain.jda, discordLog); //Setup for Util class - passes JDA and Logger	
 		botID = jda.getSelfInfo().getId();
+		callsign = ConfigFile.getCallsign();
 		sendWelcome();
 	}
 	
@@ -42,20 +46,12 @@ public class DiscordMain {
 	 */
 	public static void sendWelcome() {
 		
-		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage(
+		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage( //DEBUG this sends NPE OFTEN
 				new MessageBuilder()
-				.appendCodeBlock("Welcome to Bread Bot! \n"
-						+ "Version: " + ConfigFile.getVersion()
-						, "md")
+				.appendCodeBlock("[Welcome to Bread Bot!] \n\n"
+						+ "[Version][" + BotMain.version +"]\n"
+						, "MD")
 				.build());
-		
-		if (ConfigFile.shouldSendWelcomeMention()) { //Should we mention the Owner
-			jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage(new MessageBuilder()
-					.appendString("I am being run by ")
-					.appendMention(jda.getUserById(ConfigFile.getOwnerID()))
-					.build());
-		}
-		
 		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage("You can read more about me here - http://birdgeek.github.io/BreadBot/");
 	}
 	

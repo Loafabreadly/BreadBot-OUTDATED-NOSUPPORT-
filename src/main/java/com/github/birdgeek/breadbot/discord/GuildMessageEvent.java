@@ -15,24 +15,22 @@ import net.dv8tion.jda.JDA;
 import net.dv8tion.jda.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.hooks.ListenerAdapter;
 
-public class ChatEvent extends ListenerAdapter {
+public class GuildMessageEvent extends ListenerAdapter {
 
 
 	JDA jda;
 	Random random = new Random();
-	long start = BotMain.start;
-	String[] approvedUsers = DiscordUtility.getApprovedUsers();
 	Logger discordLog;
 	
 	
 	public static String[] availableCommands = {
-			"help", "globalhelp", "dev", "ping", "stats", 
+			"help", "globalhelp", "dev", "Ping", "stats",
 			"kill", "flip", "uptime", "currenttime"
 			, "reload", "config", "attach", "getChannel", "getServer"
 			, "google"
 			};
 	
-	public ChatEvent(JDA jda, Logger discordLog) {
+	public GuildMessageEvent(JDA jda, Logger discordLog) {
 		this.jda = jda;
 		this.discordLog = discordLog;
 	}
@@ -46,10 +44,10 @@ public class ChatEvent extends ListenerAdapter {
 					
 		switch (e.getMessage().getContent()) {
 		
-		case "#ping":
+		case "#Ping":
 			DiscordUtility.delMessage(e);
 			e.getChannel().sendMessage("PONG");
-			StatsFile.updateCount("ping");
+			StatsFile.updateCount("Ping");
 			break;
 		
 		case "#disconnect":

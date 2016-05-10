@@ -20,12 +20,28 @@ public class DiscordUtility {
 	static Logger discordLog;
 	private static String helpFileName = "help.txt";
 	static String[] approvedUsers = getApprovedUsers();
+	static String[] ignored = {"test", "test2"};
+	static String[] commands = {
+		"help", "globalhelp", "dev", "Ping", "stats",
+				"kill", "flip", "uptime", "currenttime"
+				, "reload", "config", "attach", "getChannel", "getServer"
+				, "google"
+	};
 	
 	public DiscordUtility(JDA api, Logger log) {
 		DiscordUtility.jda = api;
 		DiscordUtility.discordLog = log;
+
 	}
-	
+
+
+	public static String[] ignoredUsersIds() {
+		return ignored;
+	}
+
+	public static String[] commands() {
+		return commands;
+	}
 	/**
 	 * Returns the ID of a specific User
 	 * 

@@ -13,7 +13,7 @@ public class DiscordToTwitchEvent extends ListenerAdapter {
 	}
 	
 	public void onGuildMessageReceived(GuildMessageReceivedEvent e) {
-		if (ConfigFile.shouldEnableTwitch()) {
+		if (ConfigFile.shouldEnableIrc()) {
 		if (e.getChannel().getId().equalsIgnoreCase(ConfigFile.getTwitchDiscordChannelID())) {
 				if (e.getMessage().getContent().charAt(0) == '^') {
 					if (e.getAuthor().getId().equalsIgnoreCase(ConfigFile.getOwnerID())) {

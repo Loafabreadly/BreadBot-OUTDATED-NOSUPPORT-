@@ -13,10 +13,10 @@ public class BotMain {
 	public static long start;
 	static ConfigFile config;
 	static StatsFile stats;
-	public static String version;
 	public static Logger discordLog;
 	public static Logger ircLog;
 	public static Logger systemLog;
+	public final static String version = "0.0.7";
 	
 	/*
 	 * Main method  for Breadbot
@@ -32,16 +32,15 @@ public class BotMain {
 		stats = new StatsFile();
 		
 		start = System.currentTimeMillis();
-		version =  ConfigFile.getVersion();
 		
 
-		discordLog.info("Logging in using: " + ConfigFile.getBotToken());
+		discordLog.debug("Logging in using: " + ConfigFile.getBotToken());
 		DiscordMain.setup(discordLog);
 		
 		
-		if (ConfigFile.shouldEnableTwitch()) { //Should we enable the IRC portion?
+		if (ConfigFile.shouldEnableIrc()) { //Should we enable the IRC portion?
 			IrcMain.setup(ircLog);
-			systemLog.trace("Enabled twitch");
+			systemLog.info("Enabled twitch");
 		}
 	}
 }

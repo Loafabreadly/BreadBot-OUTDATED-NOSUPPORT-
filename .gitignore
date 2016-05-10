@@ -3,6 +3,7 @@ password.txt
 Discord bot.jar
 myConfig.cfg
 myStats.cfg
+.idea
 *.class
 tokens.json
 Built/

@@ -72,7 +72,7 @@ public class IrcMain {
 		}
 
 	public static boolean shouldEnable() {
-		return ConfigFile.shouldEnableTwitch();
+		return ConfigFile.shouldEnableIrc();
 	}
 	
 	public static void kill() {

@@ -28,7 +28,11 @@ public class ConfigFile {
 			systemLog.error(e.getMessage());
 		}
 	}
-	
+
+
+	public static char getCallsign() {
+		return config.getString("Callsign").charAt(0);
+	}
 	/*
 	 * String Arrays
 	 */
@@ -36,7 +40,7 @@ public class ConfigFile {
 		return config.getStringArray("Approved_Users");
 	}
 	
-	public static String[] getApprovedIRCUsers() {
+	public static String[] getapprovedIrcusers() {
 		return config.getStringArray("Approved_IRC_Users");
 	}
 	
@@ -48,10 +52,6 @@ public class ConfigFile {
 	 */
 	public static String getBotToken() {
 		return config.getString("Bot_Token");
-	}
-	
-	public static String getVersion() {
-		return config.getString("Version");
 	}
 	
 	public static String getTwitchChannel() {
@@ -68,17 +68,14 @@ public class ConfigFile {
 	/*
 	 * Booleans
 	 */
-	public static boolean shouldEnableTwitch() {
+	public static boolean shouldEnableIrc() {
 		return config.getBoolean("Twitch_Enable");
 	}
 	
 	public static boolean shouldDelete() {
 		return config.getBoolean("delcmd");
 	}
-	
-	public static boolean shouldSendWelcomeMention() {
-		return config.getBoolean("Send_Welcome_Mention");
-	}	
+
 	public static boolean shouldIrcRelay() {
 		return config.getBoolean("IRC_Relay");
 	}
