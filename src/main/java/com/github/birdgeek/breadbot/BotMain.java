@@ -1,5 +1,6 @@
 package com.github.birdgeek.breadbot;
 
+import net.dv8tion.jda.utils.SimpleLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,9 +14,9 @@ public class BotMain {
 	public static long start;
 	static ConfigFile config;
 	static StatsFile stats;
-	public static Logger discordLog;
-	public static Logger ircLog;
-	public static Logger systemLog;
+	public static SimpleLog discordLog;
+	public static SimpleLog ircLog;
+	public static SimpleLog systemLog;
 	public final static String version = "0.0.7";
 	
 	/*
@@ -23,9 +24,9 @@ public class BotMain {
 	 */
 	public static void main(String[] args)  {
 		
-		discordLog = LoggerFactory.getLogger("Discord");
-		ircLog = LoggerFactory.getLogger("IRC");
-		systemLog = LoggerFactory.getLogger("System");
+		discordLog = SimpleLog.getLog("Discord");
+		ircLog = SimpleLog.getLog("IRC");
+		systemLog = SimpleLog.getLog("System");
 	
 		
 		config = new ConfigFile(systemLog);

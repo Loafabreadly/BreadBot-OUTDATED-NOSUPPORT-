@@ -27,7 +27,7 @@ public class CommandInterpreter {
 
         for (int i = 0; i < DiscordUtility.commands().length; i++)
             if (availCommands[i].equalsIgnoreCase(input)) {
-                processCommand(input, e);
+                processCommand(input.toLowerCase(), e);
             }
     }
 

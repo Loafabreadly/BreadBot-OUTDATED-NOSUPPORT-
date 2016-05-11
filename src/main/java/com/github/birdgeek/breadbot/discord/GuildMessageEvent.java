@@ -5,7 +5,6 @@ import java.util.Random;
 import org.apache.commons.configuration.ConfigurationException;
 import org.slf4j.Logger;
 
-import com.github.birdgeek.breadbot.BotMain;
 import com.github.birdgeek.breadbot.utility.ConfigFile;
 import com.github.birdgeek.breadbot.utility.DiscordUtility;
 import com.github.birdgeek.breadbot.utility.GoogleSearch;

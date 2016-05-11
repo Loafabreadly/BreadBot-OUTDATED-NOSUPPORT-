@@ -1,6 +1,7 @@
 package com.github.birdgeek.breadbot.utility;
 
 
+import net.dv8tion.jda.utils.SimpleLog;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.slf4j.Logger;
@@ -10,9 +11,9 @@ import com.github.birdgeek.breadbot.BotMain;
 public class ConfigFile {
 	static String filename = "myConfig.cfg"; //TODO Set this different for releases
 	public static PropertiesConfiguration config;
-	static Logger systemLog;
+	static SimpleLog systemLog;
 	
-	public ConfigFile (Logger log)  {
+	public ConfigFile (SimpleLog log)  {
 		ConfigFile.systemLog = log;
 		try {
 			ConfigFile.config = new PropertiesConfiguration(filename);
@@ -25,7 +26,7 @@ public class ConfigFile {
 		try {
 			config.save();
 		} catch (ConfigurationException e) {
-			systemLog.error(e.getMessage());
+			systemLog.fatal(e.getMessage());
 		}
 	}
 

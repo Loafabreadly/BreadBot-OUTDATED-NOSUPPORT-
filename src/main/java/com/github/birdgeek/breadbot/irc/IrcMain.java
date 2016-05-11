@@ -2,26 +2,23 @@ package com.github.birdgeek.breadbot.irc;
 
 import java.io.IOException;
 
+import net.dv8tion.jda.utils.SimpleLog;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.exception.IrcException;
-import org.pircbotx.output.OutputIRC;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.github.birdgeek.breadbot.utility.ConfigFile;
 
 public class IrcMain {
 	public static PircBotX irc;
-	static Logger ircLog;
+	static SimpleLog ircLog;
 	public static boolean isRunning;
-	static OutputIRC output;
 	
 	
 	/*
 	 * Main method for creation of IRC Bot
 	 */
-	public static void setup(Logger log) {
+	public static void setup(SimpleLog log) {
 		ircLog = log;
 		
 		Configuration config = new Configuration.Builder()
@@ -35,10 +32,9 @@ public class IrcMain {
 		irc = new PircBotX(config);
 		try {
 			irc.startBot();
-			output = new OutputIRC(irc);
 			isRunning = true;
 		} catch (IOException | IrcException e) {
-			ircLog.error(e.getMessage());
+			ircLog.fatal(e.getMessage());
 			isRunning = false;
 			
 		}
@@ -50,7 +46,7 @@ public class IrcMain {
 	 */
 	public static void main(String[] args) {
 		
-		ircLog = LoggerFactory.getLogger("IRC");
+		ircLog = SimpleLog.getLog("IRC");
 		Configuration config = new Configuration.Builder()
 				.setName(ConfigFile.getTwitchLoginUser())
 				.addServer("irc.twitch.tv", 6667)
@@ -63,9 +59,8 @@ public class IrcMain {
 		try {
 			
 			irc.startBot();
-			output = new OutputIRC(irc);
 		} catch (IOException | IrcException e) {
-			ircLog.error(e.getMessage());
+			ircLog.fatal(e.getMessage());
 		}
 		
 			irc.send().message("#" + ConfigFile.getTwitchChannel(), "I live");
@@ -77,7 +72,7 @@ public class IrcMain {
 	
 	public static void kill() {
 		ircLog.trace("Trying to close IRC connection");
-		output.quitServer();
+		irc.stopBotReconnect();
 		
 		if (!irc.isConnected()) 
 			ircLog.trace("Succesfully closed IRC connection");

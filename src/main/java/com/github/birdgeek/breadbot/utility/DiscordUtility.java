@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import com.github.birdgeek.breadbot.discord.DiscordMain;
+import net.dv8tion.jda.utils.SimpleLog;
 import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.BotMain;
@@ -18,7 +19,7 @@ import net.dv8tion.jda.events.message.guild.GuildMessageReceivedEvent;
 
 public class DiscordUtility {
 	static JDA jda;
-	static Logger discordLog;
+	static SimpleLog discordLog;
 	private static String helpFileName = "help.txt";
 	static String[] approvedUsers = getApprovedUsers();
 	static String[] ignored = {"test", "test2"};
@@ -29,7 +30,7 @@ public class DiscordUtility {
 				, "google"
 	};
 	
-	public DiscordUtility(JDA api, Logger log) {
+	public DiscordUtility(JDA api, SimpleLog log) {
 		DiscordUtility.jda = api;
 		DiscordUtility.discordLog = log;
 
@@ -234,7 +235,7 @@ public class DiscordUtility {
 		try {
 			jda.getTextChannelById(DiscordMain.homeChannel).sendMessage(contents);
 		} catch (NullPointerException e) {
-			discordLog.error("NPE on finding Home Channel - Is the ID Correct?");
+			discordLog.fatal("NPE on finding Home Channel - Is the ID Correct?");
 		}
 	
 	}
@@ -246,7 +247,7 @@ public class DiscordUtility {
 		try {
 			jda.getTextChannelById(DiscordMain.homeChannel).sendMessage(message);
 		} catch (NullPointerException e) {
-			discordLog.error("NPE on finding Home Channel - Is the ID Correct?");
+			discordLog.fatal("NPE on finding Home Channel - Is the ID Correct?");
 			}
 	}
 

@@ -15,15 +15,17 @@ public class Attach {
 
     public static void process(GuildMessageReceivedEvent e) {
 
-        if (!Arrays.asList(DiscordUtility.getApprovedUsers()).contains(e.getAuthor().getId()))
+        if (!Arrays.asList(DiscordUtility.getApprovedUsers()).contains(e.getAuthor().getId())) {
+            DiscordMain.discordLog.trace("Someone unauthorized tried to change home channel");
             return;
+        }
 
         DiscordMain.jda.getTextChannelById(DiscordMain.homeChannel).sendMessageAsync("`Switching Home Channels!`", msg -> {
             ConfigFile.config.setProperty("Home_Channel_ID", e.getChannel().getId());
             try {
                 ConfigFile.config.save();
             } catch (ConfigurationException e1) {
-                DiscordMain.discordLog.error(e1.getLocalizedMessage());
+                DiscordMain.discordLog.fatal(e1.getLocalizedMessage());
                 e.getChannel().sendMessage("**Failed!**");
             }
             msg.updateMessage(":thumbsup::skin-tone-2:");
