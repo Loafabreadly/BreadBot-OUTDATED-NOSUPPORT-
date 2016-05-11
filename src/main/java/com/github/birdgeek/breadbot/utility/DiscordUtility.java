@@ -24,7 +24,7 @@ public class DiscordUtility {
 	static String[] approvedUsers = getApprovedUsers();
 	static String[] ignored = {"test", "test2"};
 	static String[] commands = {
-		"help", "globalhelp", "dev", "Ping", "stats",
+		"help", "globalhelp", "dev", "ping", "stats",
 				"kill", "flip", "uptime", "currenttime"
 				, "reload", "config", "attach", "getChannel", "getServer"
 				, "google"

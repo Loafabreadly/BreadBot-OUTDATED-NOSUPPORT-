@@ -28,6 +28,7 @@ public class CommandInterpreter {
         for (int i = 0; i < DiscordUtility.commands().length; i++)
             if (availCommands[i].equalsIgnoreCase(input)) {
                 processCommand(input.toLowerCase(), e);
+                DiscordMain.discordLog.trace("Found a command!");
             }
     }
 
