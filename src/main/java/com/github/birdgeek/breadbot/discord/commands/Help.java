@@ -1,5 +1,6 @@
 package com.github.birdgeek.breadbot.discord.commands;
 
+import com.github.birdgeek.breadbot.utility.DiscordUtility;
 import net.dv8tion.jda.events.message.guild.GuildMessageReceivedEvent;
 
 /**
@@ -9,6 +10,7 @@ public class Help {
 
     public static void process(GuildMessageReceivedEvent e) {
 
+        DiscordUtility.sendHelp(e);
     }
 
 

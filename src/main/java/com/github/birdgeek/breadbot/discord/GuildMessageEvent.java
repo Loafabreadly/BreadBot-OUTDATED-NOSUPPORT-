@@ -134,7 +134,7 @@ public class GuildMessageEvent extends ListenerAdapter {
 		case "#debug":
 			if (DiscordUtility.isApprovedUser(username)) {
 				
-				DiscordUtility.printDiagnostics();
+				DiscordUtility.printStats();
 				discordLog.trace(e.getAuthor().getUsername() + "  issued the debug command!");
 			}
 			break;

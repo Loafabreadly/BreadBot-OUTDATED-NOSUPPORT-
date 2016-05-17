@@ -211,7 +211,7 @@ public class DiscordUtility {
 	/**
 	 * @return Prints diagnositcs to home channel
 	 */
-	public static void printDiagnostics() {
+	public static Message printStats() {
 		
 		Message message = new MessageBuilder().appendCodeBlock(
 				"[BreadBot-version-" + BotMain.version+"]\n\n"
@@ -221,11 +221,11 @@ public class DiscordUtility {
 						+ "[Discord]\n"
 						+ "[JDA Version][" + net.dv8tion.jda.JDAInfo.VERSION +"]\n"
 						+ "[Home Channel][" + DiscordMain.homeChannel + "]/[" + jda.getTextChannelById(DiscordMain.homeChannel).getName() + "]"
-						+ "\n[Home Guild][" + ConfigFile.getHomeGuild() + "]/[" + jda.getGuildById(ConfigFile.getHomeGuild()).getName() + "]"
+						+ "\n[Home Guild][" + ConfigFile.getHomeGuild() + "]/[" + jda.getGuildById(DiscordMain.homeGuild).getName() + "]"
 						+ "\n[Owner][" + jda.getUserById(ConfigFile.getOwnerID()) + "]"
 				, "MD")
 				.build();
-		sendMessage(message);
+		return message;
 		}
 	/**
 	 * @return sends message to home channel

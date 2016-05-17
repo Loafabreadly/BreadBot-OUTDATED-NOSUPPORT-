@@ -4,7 +4,6 @@ import javax.security.auth.login.LoginException;
 
 import com.github.birdgeek.breadbot.BotMain;
 import net.dv8tion.jda.utils.SimpleLog;
-import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.utility.ConfigFile;
 import com.github.birdgeek.breadbot.utility.DiscordUtility;
@@ -31,6 +30,8 @@ public class DiscordMain {
 				.addListener(new GuildMessageListener()) //Pass API and Specific Logger
 				.addListener(new DiscordToTwitchEvent())
 				.addListener(new PrivateMessageListener())
+				.addListener(new MemberJoinEvent())
+				.addListener(new Eval())
 				.buildBlocking();
 		} catch (LoginException | IllegalArgumentException | InterruptedException e) {
 		discordLog.fatal(e.getMessage());
