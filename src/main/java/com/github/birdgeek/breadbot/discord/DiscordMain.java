@@ -20,9 +20,11 @@ public class DiscordMain {
 	static char callsign;
 	public static String homeChannel;
 	public static String homeGuild;
+    static boolean supressed = true;
 	
 	public static void setup(SimpleLog log) {
 		discordLog = log;
+        discordLog.setLevel(SimpleLog.Level.ALL);
 
 		try {
 			jda = new JDABuilder()
@@ -43,7 +45,9 @@ public class DiscordMain {
 		callsign = ConfigFile.getCallsign();
 		homeChannel = ConfigFile.getHomeChannel();
 		homeGuild = ConfigFile.getHomeGuild();
-		sendWelcome();
+
+        if (!supressed)
+            sendWelcome();
 	}
 	
 	/*

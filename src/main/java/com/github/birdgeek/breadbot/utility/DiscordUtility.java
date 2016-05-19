@@ -132,7 +132,7 @@ public class DiscordUtility {
 		different = different % minutesInMilli;
 
 		long elapsedSeconds = different / secondsInMilli;
-		String uptime = String.format("%d D:%d HR:%d MIN:%d SEC%n", //THANKS FOR FIXING THIS SHIT VAN
+		String uptime = String.format("%d D:%d HR:%d MIN:%d SEC", //THANKS FOR FIXING THIS SHIT VAN
 				elapsedDays,
 				elapsedHours, elapsedMinutes, elapsedSeconds);
 

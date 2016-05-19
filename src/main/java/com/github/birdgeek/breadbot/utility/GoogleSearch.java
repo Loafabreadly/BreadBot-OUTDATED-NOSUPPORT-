@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
+import net.dv8tion.jda.entities.Message;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -38,10 +39,10 @@ public class GoogleSearch {
 				        continue; // Ads/news/etc.
 				    }			 
 			 
-			 String str = new MessageBuilder()
+			 Message str = new MessageBuilder()
 					 .appendString("**Site Title:** " + title
 							 + "\n**URL**: " + url)
-					 .build().getContent();
+					 .build();
 			 event.getChannel().sendMessage(str);
 			 }
 		}

@@ -20,9 +20,12 @@ public class CommandInterpreter {
      */
     static void processMessage(GuildMessageReceivedEvent e) {
 
-        if (e.getMessage().getContent().charAt(0) != DiscordMain.callsign
-                || Arrays.asList(DiscordUtility.ignoredUsersIds()).contains(e.getAuthor().getId()))
+        if (Arrays.asList(DiscordUtility.ignoredUsersIds()).contains(e.getAuthor().getId())
+                || e.getAuthor().getId().equalsIgnoreCase(e.getJDA().getSelfInfo().getId())
+                || (e.getMessage().getContent().isEmpty() && e.getMessage().getAttachments().get(0).isImage()))
             return;
+        if (e.getMessage().getRawContent().charAt(0) != DiscordMain.callsign)
+        return;
 
         String input = e.getMessage().getContent().substring(1).toLowerCase();
         processCommand(input, e);
@@ -82,6 +85,10 @@ public class CommandInterpreter {
             } catch (IOException e1) {
                DiscordMain.discordLog.fatal(e1.getMessage());
             }
+        }
+
+        if (input.length() > 6 && input.substring(0,5).contentEquals("flip ")) {
+            Flip.process(e);
         }
     }
     /**
