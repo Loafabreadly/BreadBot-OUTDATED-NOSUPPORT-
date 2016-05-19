@@ -29,6 +29,7 @@ public class CommandInterpreter {
 
         String input = e.getMessage().getContent().substring(1).toLowerCase();
         processCommand(input, e);
+
     }
 
     static void processCommand(String input, GuildMessageReceivedEvent e) {
@@ -91,14 +92,15 @@ public class CommandInterpreter {
             Flip.process(e);
         }
     }
+
     /**
      * Inteprets the PM
      * @param e
      */
     static void processMessage(PrivateMessageReceivedEvent e) {
 
-    }
 
+    }
     static void processPMCommand(PrivateMessageReceivedEvent e) {
 
     }
