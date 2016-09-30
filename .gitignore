@@ -1,4 +1,5 @@
 /target/
+.idea/
 password.txt
 Discord bot.jar
 myConfig.cfg
