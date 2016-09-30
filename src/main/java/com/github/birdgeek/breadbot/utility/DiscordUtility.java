@@ -27,10 +27,19 @@ public class DiscordUtility {
 		DiscordUtility.discordLog = log;
 	}
 	
+	/**
+	 * Return ID of a user from a GuildMessage
+	 * @param e
+	 * @return
+	 */
 	public static String getUsernameID(GuildMessageReceivedEvent e) {
 		return e.getAuthor().getId();
 	}
-
+	/**
+	 * Checks to see if the string username of a user matches the string from the config file for Owner powers
+	 * @param username
+	 * @return
+	 */
 	public static boolean isOwner(String username) {
 		if (ConfigFile.getOwnerID().toString().equalsIgnoreCase(username))
 			return true;
@@ -47,6 +56,9 @@ public class DiscordUtility {
 		}
 	}
 
+	/**
+	 * Sends default help text to the channel
+	 */
 	public static void sendGlobalHelp(GuildMessageReceivedEvent e) {
 		e.getChannel().sendMessage(new MessageBuilder()
 				.appendString("Welcome to the help command! Below are all the commands you can run!")
@@ -55,6 +67,10 @@ public class DiscordUtility {
 		
 	}
 
+	/**
+	 * Sends helps to a user via PM
+	 * @param e
+	 */
 	public static void sendHelp(GuildMessageReceivedEvent e) {
 		if (!e.getAuthor().getUsername().equalsIgnoreCase(jda.getSelfInfo().getUsername())) {
 			e.getAuthor().getPrivateChannel().sendMessage("Welcome to the help command! Below are all the commands you can run!");
@@ -64,12 +80,19 @@ public class DiscordUtility {
 			e.getChannel().sendMessage("Cannot send help to yourself in PM; try #global help");
 		}
 	}
-	
+	/**
+	 * Sends help to a user - Initated via PM
+	 * @param e
+	 */
 	public static void sendHelp(PrivateChannel e) {
 		e.sendMessage(new MessageBuilder().appendCodeBlock(getHelpCommands(), "python").build());
 	}
 	
-
+	/**
+	 * Sends uptime to a public channel
+	 * @param e
+	 */
+			
 	public static void sendUptime(GuildMessageReceivedEvent e) {
 		long different = System.currentTimeMillis() - BotMain.start;
 		long secondsInMilli = 1000;
@@ -94,6 +117,10 @@ public class DiscordUtility {
 		e.getChannel().sendMessage( "I have been online for " + time);	
 		}
 
+	/**
+	 * Outdated
+	 * @return
+	 */
 	private static String getHelpCommands() {
 		
 		StringBuilder sb = new StringBuilder();
@@ -121,15 +148,27 @@ public class DiscordUtility {
 		}
 		return "It must have failed on me :(";
 	}
-
+	/**
+	 * Returns String array of approved Users
+	 * @return
+	 */
 	public static String[] getApprovedUsers() {
 		return ConfigFile.getApprovedUsers();
 		
 	}
+	/**
+	 * 
+	 * @param e
+	 * @return String of a user from given guild message event
+	 */
 	public static String getUsername(GuildMessageReceivedEvent e) {
 		return e.getAuthor().getUsername();
 	}
-	
+	/**
+	 * If a user is contained in the string array
+	 * @param username
+	 * @return
+	 */
 	public static boolean isApprovedUser(String username) {
 		for (int i=0; i < approvedUsers.length; i++) {
 			if (username.equalsIgnoreCase(approvedUsers[i])) {
@@ -138,7 +177,9 @@ public class DiscordUtility {
 		}
 			return false;
 	}
-	
+	/**
+	 * Debug
+	 */
 	public static void printDiagnostics() {
 		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage("test");
 		jda.getTextChannelById(ConfigFile.getHomeChannel()).sendMessage(
@@ -157,11 +198,18 @@ public class DiscordUtility {
 				.build());
 		*/
 		}
+	/**
+	 * Sends a message using String to home channel
+	 * @param contents
+	 */
 	public static void sendMessage(String contents) {
 		jda.getTextChannelById("" +ConfigFile.getHomeChannel()).sendMessage(contents);
 	
 	}
-
+	/**
+	 * Sends a message using type Message to home channel
+	 * @param message
+	 */
 	public static void sendMessage(Message message) {
 		jda.getTextChannelById("" +ConfigFile.getHomeChannel()).sendMessage(message);
 	}
