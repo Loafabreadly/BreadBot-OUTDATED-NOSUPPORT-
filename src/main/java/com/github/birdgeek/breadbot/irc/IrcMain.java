@@ -25,7 +25,7 @@ public class IrcMain {
 				.setName(ConfigFile.getTwitchLoginUser())
 				.addServer("irc.twitch.tv", 6667)
 				.setServerPassword(ConfigFile.getOAuth())
-				.addAutoJoinChannel("#" + ConfigFile.getTwitchChannel())
+				.addAutoJoinChannel("#" + ConfigFile.getTwitchChannel().replace("#", ""))
 				.addListener(new ChatListener())
 				.buildConfiguration();
 				
@@ -45,34 +45,16 @@ public class IrcMain {
 	 * Debug main method for running just the IRC Bot (Should never be used)
 	 */
 	public static void main(String[] args) {
-		
 		ircLog = SimpleLog.getLog("IRC");
-		Configuration config = new Configuration.Builder()
-				.setName(ConfigFile.getTwitchLoginUser())
-				.addServer("irc.twitch.tv", 6667)
-				.setServerPassword(ConfigFile.getOAuth())
-				.addAutoJoinChannel("#" + ConfigFile.getTwitchChannel())
-				.addListener(new ChatListener())
-				.buildConfiguration();
-				
-		irc = new PircBotX(config);
-		try {
-			
-			irc.startBot();
-		} catch (IOException | IrcException e) {
-			ircLog.fatal(e.getMessage());
-		}
-		
-			irc.send().message("#" + ConfigFile.getTwitchChannel(), "I live");
-		}
-
+		setup(ircLog);
+	}
 	public static boolean shouldEnable() {
 		return ConfigFile.shouldEnableIrc();
 	}
 	
 	public static void kill() {
 		ircLog.trace("Trying to close IRC connection");
-		irc.stopBotReconnect();
+		irc.close();
 		
 		if (!irc.isConnected()) 
 			ircLog.trace("Succesfully closed IRC connection");
@@ -83,7 +65,7 @@ public class IrcMain {
 	
 	public static void sendMessage(String contents) {
 
-		irc.sendRaw().rawLine("PRIVMSG #" + ConfigFile.getTwitchChannel() +" :" + contents);
+		irc.sendRaw().rawLine("PRIVMSG #" + ConfigFile.getTwitchChannel().replace("#", "") +" :" + contents);
 	}
 
 }

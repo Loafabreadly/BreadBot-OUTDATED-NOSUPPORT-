@@ -3,6 +3,7 @@ package com.github.birdgeek.breadbot.discord;
 import javax.security.auth.login.LoginException;
 
 import com.github.birdgeek.breadbot.BotMain;
+import com.github.birdgeek.breadbot.utility.IrcUtility;
 import net.dv8tion.jda.utils.SimpleLog;
 
 import com.github.birdgeek.breadbot.utility.ConfigFile;
@@ -30,7 +31,6 @@ public class DiscordMain {
 			jda = new JDABuilder()
 				.setBotToken(ConfigFile.getBotToken())
 				.addListener(new GuildMessageListener()) //Pass API and Specific Logger
-				.addListener(new DiscordToTwitchEvent())
 				.addListener(new PrivateMessageListener())
 				.addListener(new MemberJoinEvent())
 				.addListener(new Eval())
@@ -48,6 +48,9 @@ public class DiscordMain {
 
         if (!supressed)
             sendWelcome();
+
+        if (IrcUtility.isDoingRelay())
+            jda.addEventListener(new DiscordToTwitchEvent());
 	}
 	
 	/*

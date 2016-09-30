@@ -80,6 +80,7 @@ public class ConfigFile {
 	public static boolean shouldIrcRelay() {
 		return config.getBoolean("IRC_Relay");
 	}
+	public static boolean isVerbrose() { return config.getBoolean("Twitch_Verbrose"); }
 	public static void setIrcRelay(boolean value) {
 		config.setProperty("IRC_Relay", value);
 	}
@@ -102,5 +103,7 @@ public class ConfigFile {
 	public static String getTwitchDiscordChannelID() {
 		return config.getBigInteger("Twitch_Discord_Channel_ID").toString();
 	}
+
+
 
 }

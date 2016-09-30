@@ -10,7 +10,7 @@ public class IrcUtility extends ListenerAdapter  {
 	static String[] ircCommands = {"help", "toggle"};
 	
 	public IrcUtility() {
-		targetChannel = "#" + ConfigFile.getTwitchChannel();
+		targetChannel = "#" + ConfigFile.getTwitchChannel().replace("#", "");
 	}
 	
 	/**
@@ -25,7 +25,6 @@ public class IrcUtility extends ListenerAdapter  {
 			if (ignoredUsers[i].equalsIgnoreCase(nick))
 				return true;
 		}
-		
 		return false;
 	}
 
@@ -55,6 +54,8 @@ public class IrcUtility extends ListenerAdapter  {
 	public static boolean isDoingRelay() {
 		return ConfigFile.shouldIrcRelay();
 	}
+
+	public static boolean verbrose() { return ConfigFile.isVerbrose(); }
 
 	/**
 	 * @return Method for finding is a specific user is admin on Bot
