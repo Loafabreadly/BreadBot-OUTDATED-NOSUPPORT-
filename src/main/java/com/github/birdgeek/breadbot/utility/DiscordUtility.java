@@ -37,6 +37,7 @@ public class DiscordUtility {
 	}
 
 
+
 	public static String[] ignoredUsersIds() {
 		return ignored;
 	}
@@ -53,9 +54,6 @@ public class DiscordUtility {
 		return guildMessageEvent.getAuthor().getId();
 	}
 
-	/**
-	 * @return - t/f depending on if ID of user is = to ID of Owner from config
-	 * 
 	 */
 	public static boolean isOwner(String username) {
 		if (ConfigFile.getOwnerID().toString().equalsIgnoreCase(username))
@@ -75,6 +73,7 @@ public class DiscordUtility {
 			guildMessageEvent.getMessage().deleteMessage();
 		}
 	}
+
 	/**
 	 * Sends help to Text Channel
 	 * @param guildMessageEvent - Required to send to text channel
@@ -82,6 +81,13 @@ public class DiscordUtility {
 	 */
 	public static void sendGlobalHelp(GuildMessageReceivedEvent guildMessageEvent) {
 		guildMessageEvent.getChannel().sendMessage(new MessageBuilder()
+
+
+	/**
+	 * Sends default help text to the channel
+	 */
+	public static void sendGlobalHelp(GuildMessageReceivedEvent e) {
+		e.getChannel().sendMessage(new MessageBuilder()
 				.appendString("Welcome to the help command! Below are all the commands you can run!")
 				.appendCodeBlock(getHelpCommands(), "python")
 				.build());
@@ -103,6 +109,7 @@ public class DiscordUtility {
 		}
 	}
 	/**
+
 	 * Sends help to Private channel (issued from Private Channel)
 	 * @param privateChannel - Required to respond directly to Private Channel
 	 * @return - Returns help.txt in a formatted code block
@@ -111,11 +118,16 @@ public class DiscordUtility {
 		privateChannel.sendMessage(new MessageBuilder().appendCodeBlock(getHelpCommands(), "python").build());
 	}
 
+	public static void sendHelp(PrivateChannel e) {
+		e.sendMessage(new MessageBuilder().appendCodeBlock(getHelpCommands(), "python").build());
+	}
+	
 	/**
-	 *
-	 * @return the uptime formatted D:H:M:S
-     */
-	public static String getUptime() {
+	 * Sends uptime to a public channel
+	 * @param e
+	 */
+			
+
 		long different = System.currentTimeMillis() - BotMain.start;
 		long secondsInMilli = 1000;
 		long minutesInMilli = secondsInMilli * 60;
@@ -146,10 +158,6 @@ public class DiscordUtility {
 		guildMessageEvent.getChannel().sendMessage( "`I have been online for " + getUptime()  + "`");
 		}
 
-	/**
-	 * 
-	 * @return String of everything in help.txt file
-	 */
 	private static String getHelpCommands() {
 		
 		StringBuilder sb = new StringBuilder();
@@ -178,15 +186,12 @@ public class DiscordUtility {
 		return "It must have failed on me :(";
 	}
 
-	/**
-	 * 
-	 * @return ApprovedUsers Array
-	 */
 	public static String[] getApprovedUsers() {
 		return ConfigFile.getApprovedUsers();
 		
 	}
 	/**
+
 	 * @param guildMessageEvent
 	 * @return String of username
 	 */
@@ -207,6 +212,7 @@ public class DiscordUtility {
 		}
 			return false;
 	}
+
 	
 	/**
 	 * @return Prints diagnositcs to home channel
@@ -240,9 +246,6 @@ public class DiscordUtility {
 	
 	}
 	/**
-	 * @return sends message to home channel
-	 * @param message
-	 */
 	public static void sendMessage(Message message) {
 		try {
 			jda.getTextChannelById(DiscordMain.homeChannel).sendMessage(message);
