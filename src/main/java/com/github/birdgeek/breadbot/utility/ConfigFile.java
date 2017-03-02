@@ -1,16 +1,20 @@
 package com.github.birdgeek.breadbot.utility;
 
 
+import net.dv8tion.jda.utils.SimpleLog;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.slf4j.Logger;
 
 import com.github.birdgeek.breadbot.BotMain;
 
 public class ConfigFile {
 	static String filename = "myConfig.cfg"; //TODO Set this different for releases
 	public static PropertiesConfiguration config;
+	static SimpleLog systemLog;
 	
-	public ConfigFile ()  {
+	public ConfigFile (SimpleLog log)  {
+		ConfigFile.systemLog = log;
 		try {
 			ConfigFile.config = new PropertiesConfiguration(filename);
 		} catch (ConfigurationException e) {
@@ -18,6 +22,18 @@ public class ConfigFile {
 		}
 	}
 	
+	public static void save() {
+		try {
+			config.save();
+		} catch (ConfigurationException e) {
+			systemLog.fatal(e.getMessage());
+		}
+	}
+
+
+	public static char getCallsign() {
+		return config.getString("Callsign").charAt(0);
+	}
 	/*
 	 * String Arrays
 	 */
@@ -25,7 +41,7 @@ public class ConfigFile {
 		return config.getStringArray("Approved_Users");
 	}
 	
-	public static String[] getApprovedIRCUsers() {
+	public static String[] getapprovedIrcusers() {
 		return config.getStringArray("Approved_IRC_Users");
 	}
 	
@@ -35,16 +51,8 @@ public class ConfigFile {
 	/*
 	 * Strings
 	 */
-	public static String getEmail() throws ConfigurationException {
-		return config.getString("Email");
-	}
-	
-	public static String getPassword() throws ConfigurationException {
-		return config.getString("Password");
-	}
-	
-	public static String getVersion() {
-		return config.getString("Version");
+	public static String getBotToken() {
+		return config.getString("Bot_Token");
 	}
 	
 	public static String getTwitchChannel() {
@@ -61,20 +69,18 @@ public class ConfigFile {
 	/*
 	 * Booleans
 	 */
-	public static boolean shouldEnableTwitch() {
+	public static boolean shouldEnableIrc() {
 		return config.getBoolean("Twitch_Enable");
 	}
 	
 	public static boolean shouldDelete() {
 		return config.getBoolean("delcmd");
 	}
-	
-	public static boolean shouldSendWelcomeMention() {
-		return config.getBoolean("Send_Welcome_Mention");
-	}	
+
 	public static boolean shouldIrcRelay() {
 		return config.getBoolean("IRC_Relay");
 	}
+	public static boolean isVerbrose() { return config.getBoolean("Twitch_Verbrose"); }
 	public static void setIrcRelay(boolean value) {
 		config.setProperty("IRC_Relay", value);
 	}
@@ -97,5 +103,7 @@ public class ConfigFile {
 	public static String getTwitchDiscordChannelID() {
 		return config.getBigInteger("Twitch_Discord_Channel_ID").toString();
 	}
+
+
 
 }
